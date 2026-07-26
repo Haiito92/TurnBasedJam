@@ -20,6 +20,7 @@ void ATurnBasedGameModeBase::InitializeGameMode()
 	if (!IsValid(GameModesSettings))
 	{
 		UTurnBasedDebugLibrary::Print(EDebugMessageType::Error, "[ATurnBasedGameModeBase] GameModeSettings invalid!");
+		return;
 	}
 	else UTurnBasedDebugLibrary::Print(EDebugMessageType::Log, "[ATurnBasedGameModeBase] GameModeSettings valid!");
 }

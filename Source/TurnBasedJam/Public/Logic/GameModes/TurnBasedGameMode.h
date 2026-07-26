@@ -15,6 +15,8 @@ class TURNBASEDJAM_API ATurnBasedGameMode : public ATurnBasedGameModeBase
 {
 	GENERATED_BODY()
 	
+protected:
+	virtual void InitializeGameMode() override;
 private:
 	UPROPERTY()
 	TObjectPtr<UTurnManager> TurnManager;
