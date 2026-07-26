@@ -6,6 +6,7 @@
 #include "TurnBasedGameModeBase.h"
 #include "TurnBasedGameMode.generated.h"
 
+class UTurnManager;
 /**
  * 
  */
@@ -13,4 +14,8 @@ UCLASS()
 class TURNBASEDJAM_API ATurnBasedGameMode : public ATurnBasedGameModeBase
 {
 	GENERATED_BODY()
+	
+private:
+	UPROPERTY()
+	TObjectPtr<UTurnManager> TurnManager;
 };
