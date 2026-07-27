@@ -7,6 +7,7 @@
 #include "Logic/FightActors/Hero.h"
 #include "Logic/FightActors/Vampire.h"
 #include "Logic/GameModes/GameModesSettings.h"
+#include "Logic/PlayerControllers/TurnBasedPlayerControllerBase.h"
 #include "Logic/TurnMechanic/TurnManager.h"
 
 AHero* ATurnBasedGameMode::GetHero() const
@@ -64,5 +65,9 @@ void ATurnBasedGameMode::StartGame()
 	
 	UTurnBasedDebugLibrary::Print(EDebugMessageType::Log, "[ATurnBasedGameMode] Start Game!");
 
+	FInputModeUIOnly InputModeData = {};
+	PlayerController->SetInputMode(InputModeData);
+	PlayerController->SetShowMouseCursor(true);
+	
 	TurnManager->StartFight();
 }

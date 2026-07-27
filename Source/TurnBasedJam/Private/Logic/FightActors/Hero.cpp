@@ -2,7 +2,6 @@
 
 
 #include "Logic/FightActors/Hero.h"
-#include "Logic/Debug/TurnBasedDebugLibrary.h"
 
 
 // Sets default values
@@ -12,10 +11,10 @@ AHero::AHero()
 	PrimaryActorTick.bCanEverTick = true;
 }
 
-void AHero::ChooseNextAction_Implementation()
+void AHero::PrepareTurn(ATurnBasedActor* Enemy)
 {
-	UTurnBasedDebugLibrary::Print(EDebugMessageType::Log, "[Hero] Action chosen!");
+	SetNextActionTarget(this); // All hero action target himself so I'm just doing this, faster even if not clean
 	
-	Super::ChooseNextAction_Implementation();
+	TurnPreparationStarted.Broadcast();
 }
 

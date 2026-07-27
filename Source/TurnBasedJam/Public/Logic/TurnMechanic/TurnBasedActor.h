@@ -3,12 +3,14 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "TurnBased.h"
 #include "GameFramework/Actor.h"
+#include "Logic/Actions/Action.h"
 #include "TurnBasedActor.generated.h"
 
+class UActionData;
+
 UCLASS()
-class TURNBASEDJAM_API ATurnBasedActor : public AActor, public ITurnBased
+class TURNBASEDJAM_API ATurnBasedActor : public AActor
 {
 	GENERATED_BODY()
 
@@ -16,15 +18,27 @@ public:
 	// Sets default values for this actor's properties
 	ATurnBasedActor();
 
-	virtual void PrepareTurn_Implementation() override;
-	virtual void FinalizeTurnPreparation_Implementation() override;
-	virtual void ChooseNextAction_Implementation() override;
-	virtual void StartTurn_Implementation() override;
-	virtual void EndTurn_Implementation() override;	
+	UFUNCTION(BlueprintCallable)
+	virtual void PrepareTurn(ATurnBasedActor* Enemy);
+	UFUNCTION(BlueprintCallable)
+	virtual void SetNextActionData(UActionData* Data);
+	UFUNCTION(BlueprintCallable)
+	virtual void SetNextActionTarget(ATurnBasedActor* Target);
+	UFUNCTION(BlueprintCallable)
+	virtual void ValidateNextAction();
+	UFUNCTION(BlueprintCallable)
+	virtual void FinalizeTurnPreparation();
+	UFUNCTION(BlueprintCallable)
+	virtual void StartTurn();
+	UFUNCTION(BlueprintCallable)
+	virtual void EndTurn();	
 	
-	DECLARE_DYNAMIC_MULTICAST_DELEGATE(FNextActionChosenSignature);
+	UFUNCTION(BlueprintCallable)
+	TArray<UActionData*> GetActionsData() const;
+	
+	DECLARE_DYNAMIC_MULTICAST_DELEGATE(FNextActionValidatedSignature);
 	UPROPERTY(BlueprintAssignable)
-	FNextActionChosenSignature NextActionChosen;
+	FNextActionValidatedSignature NextActionValidated;
 	
 	DECLARE_DYNAMIC_MULTICAST_DELEGATE(FTurnPreparationStartedSignature);
 	UPROPERTY(BlueprintAssignable)
@@ -42,7 +56,15 @@ public:
 	UPROPERTY(BlueprintAssignable)
 	FTurnEndedSignature TurnEnded;
 	
+protected:
+	UPROPERTY(EditAnywhere, Category="Turn Based Actor|Turn Actions")
+	TArray<UActionData*> ActionsData;
+	
+	UPROPERTY()
+	FAction NextAction;
+	
 private:
 	UPROPERTY(EditAnywhere)
 	TObjectPtr<UStaticMeshComponent> ActorMesh;
+	
 };

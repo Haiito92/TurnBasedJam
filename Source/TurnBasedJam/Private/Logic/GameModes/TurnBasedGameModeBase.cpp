@@ -5,6 +5,7 @@
 
 #include "Kismet/GameplayStatics.h"
 #include "Logic/HUDs/TurnBasedHUDBase.h"
+#include "Logic/PlayerControllers/TurnBasedPlayerControllerBase.h"
 #include "TurnBasedJam/Public/Logic/Debug/TurnBasedDebugLibrary.h"
 #include "TurnBasedJam/Public/Logic/GameModes/GameModesSettings.h"
 
@@ -47,12 +48,7 @@ bool ATurnBasedGameModeBase::InitializeGame()
 	}
 	UTurnBasedDebugLibrary::Print(EDebugMessageType::Log, "[ATurnBasedGameModeBase] GameModeSettings valid!");
 
-	return true;
-}
-
-bool ATurnBasedGameModeBase::InitializeUI()
-{
-	APlayerController* PlayerController = UGameplayStatics::GetPlayerController(this, 0);
+	PlayerController = Cast<ATurnBasedPlayerControllerBase>(UGameplayStatics::GetPlayerController(this, 0));
 	
 	if (!IsValid(PlayerController))
 	{
@@ -60,6 +56,11 @@ bool ATurnBasedGameModeBase::InitializeUI()
 		return false;
 	}
 	
+	return true;
+}
+
+bool ATurnBasedGameModeBase::InitializeUI()
+{
 	HUD = Cast<ATurnBasedHUDBase>(PlayerController->GetHUD());
 	
 	if (!IsValid(HUD))

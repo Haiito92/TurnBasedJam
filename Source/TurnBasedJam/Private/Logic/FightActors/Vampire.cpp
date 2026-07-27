@@ -13,17 +13,14 @@ AVampire::AVampire()
 	PrimaryActorTick.bCanEverTick = true;
 }
 
-void AVampire::PrepareTurn_Implementation()
+void AVampire::PrepareTurn(ATurnBasedActor* Enemy)
 {
-	Super::PrepareTurn_Implementation();
+	TurnPreparationStarted.Broadcast();
 	
-	Execute_ChooseNextAction(this);
-}
-
-void AVampire::ChooseNextAction_Implementation()
-{
-	UTurnBasedDebugLibrary::Print(EDebugMessageType::Log, "[Vampire] Action chosen!");
-
-	Super::ChooseNextAction_Implementation();
+	SetNextActionTarget(Enemy);
+	
+	//Action choice
+	
+	ValidateNextAction();
 }
 

@@ -13,7 +13,7 @@ bool UTurnManager::InitializeTurnManager(ATurnBasedActor* InHero, ATurnBasedActo
 		UTurnBasedDebugLibrary::Print(EDebugMessageType::Error, "[UTurnManager] Init failed, hero invalid!");
 		return false;
 	}
-	Hero->NextActionChosen.AddDynamic(this, &UTurnManager::OnHeroNextActionChosen);
+	Hero->NextActionValidated.AddDynamic(this, &UTurnManager::OnHeroNextActionValidated);
 	
 	Vampire = InVampire;
 	if (!IsValid(Vampire))
@@ -40,20 +40,20 @@ void UTurnManager::StartFight()
 
 void UTurnManager::PrepareTurn()
 {
-	ITurnBased::Execute_PrepareTurn(Vampire);
+	Vampire->PrepareTurn(Hero);
 	
-	ITurnBased::Execute_PrepareTurn(Hero);
+	Hero->PrepareTurn(Vampire);
 }
 
-void UTurnManager::OnHeroNextActionChosen()
+void UTurnManager::OnHeroNextActionValidated()
 {
 	FinalizeTurnPreparation();
 }
 
 void UTurnManager::FinalizeTurnPreparation()
 {
-	ITurnBased::Execute_FinalizeTurnPreparation(Hero);
-	ITurnBased::Execute_FinalizeTurnPreparation(Vampire);
+	Hero->FinalizeTurnPreparation();
+	Vampire->FinalizeTurnPreparation();
 	
 	ResolveTurn();
 }

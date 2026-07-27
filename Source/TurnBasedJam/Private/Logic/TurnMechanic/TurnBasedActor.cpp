@@ -14,36 +14,42 @@ ATurnBasedActor::ATurnBasedActor()
 	SetRootComponent(ActorMesh);
 }
 
-void ATurnBasedActor::PrepareTurn_Implementation()
+void ATurnBasedActor::PrepareTurn(ATurnBasedActor* Enemy)
 {
-	ITurnBased::PrepareTurn_Implementation();
 }
 
-void ATurnBasedActor::FinalizeTurnPreparation_Implementation()
+void ATurnBasedActor::SetNextActionData(UActionData* Data)
 {
-	ITurnBased::FinalizeTurnPreparation_Implementation();
+	NextAction.Data = Data;
 }
 
-void ATurnBasedActor::ChooseNextAction_Implementation()
+void ATurnBasedActor::SetNextActionTarget(ATurnBasedActor* Target)
 {
-	ITurnBased::ChooseNextAction_Implementation();
-	
-	NextActionChosen.Broadcast();
+	NextAction.Target = Target;
 }
 
-
-void ATurnBasedActor::StartTurn_Implementation()
+void ATurnBasedActor::ValidateNextAction()
 {
-	ITurnBased::StartTurn_Implementation();
-	
+	NextActionValidated.Broadcast();
+}
+
+void ATurnBasedActor::FinalizeTurnPreparation()
+{
+}
+
+void ATurnBasedActor::StartTurn()
+{
 	TurnStarted.Broadcast();
 }
 
-void ATurnBasedActor::EndTurn_Implementation()
+void ATurnBasedActor::EndTurn()
 {
-	ITurnBased::EndTurn_Implementation();
-	
 	TurnEnded.Broadcast();
+}
+
+TArray<UActionData*> ATurnBasedActor::GetActionsData() const
+{
+	return ActionsData;
 }
 
 

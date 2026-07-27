@@ -15,5 +15,5 @@ public:
 	// Sets default values for this actor's properties
 	AHero();
 	
-	virtual void ChooseNextAction_Implementation() override;
+	virtual void PrepareTurn(ATurnBasedActor* Enemy) override;
 };

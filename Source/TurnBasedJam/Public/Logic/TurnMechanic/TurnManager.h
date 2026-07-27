@@ -26,7 +26,7 @@ private:
 	UFUNCTION()
 	void PrepareTurn();
 	UFUNCTION()
-	void OnHeroNextActionChosen();
+	void OnHeroNextActionValidated();
 	UFUNCTION()
 	void FinalizeTurnPreparation();
 	UFUNCTION()

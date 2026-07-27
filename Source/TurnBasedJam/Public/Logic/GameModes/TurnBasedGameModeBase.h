@@ -6,6 +6,7 @@
 #include "GameFramework/GameModeBase.h"
 #include "TurnBasedGameModeBase.generated.h"
 
+class ATurnBasedPlayerControllerBase;
 class ATurnBasedHUDBase;
 class UGameModesSettings;
 /**
@@ -30,7 +31,9 @@ protected:
 	UPROPERTY()
 	const UGameModesSettings* GameModesSettings;
 	
-private:
 	UPROPERTY()
 	TObjectPtr<ATurnBasedHUDBase> HUD;
+	
+	UPROPERTY()
+	TObjectPtr<ATurnBasedPlayerControllerBase> PlayerController;
 };
