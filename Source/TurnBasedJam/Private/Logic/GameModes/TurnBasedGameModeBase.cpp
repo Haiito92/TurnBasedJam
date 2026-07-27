@@ -3,6 +3,8 @@
 
 #include "TurnBasedJam/Public/Logic/GameModes/TurnBasedGameModeBase.h"
 
+#include "Kismet/GameplayStatics.h"
+#include "Logic/HUDs/TurnBasedHUDBase.h"
 #include "TurnBasedJam/Public/Logic/Debug/TurnBasedDebugLibrary.h"
 #include "TurnBasedJam/Public/Logic/GameModes/GameModesSettings.h"
 
@@ -21,15 +23,53 @@ void ATurnBasedGameModeBase::BeginPlay()
 
 bool ATurnBasedGameModeBase::InitializeGameMode()
 {
+	if (!InitializeGame())
+	{
+		return false;
+	}
+	
+	if (!InitializeUI())
+	{
+		return false;
+	}
+	
+	return true;
+}
+
+bool ATurnBasedGameModeBase::InitializeGame()
+{
 	GameModesSettings = GetDefault<UGameModesSettings>();
 	
 	if (!IsValid(GameModesSettings))
 	{
-		UTurnBasedDebugLibrary::Print(EDebugMessageType::Error, "[ATurnBasedGameModeBase] GameModeSettings invalid!");
+		UTurnBasedDebugLibrary::Print(EDebugMessageType::Error, "[ATurnBasedGameModeBase] Failed init, GameModeSettings invalid!");
 		return false;
 	}
-	else UTurnBasedDebugLibrary::Print(EDebugMessageType::Log, "[ATurnBasedGameModeBase] GameModeSettings valid!");
+	UTurnBasedDebugLibrary::Print(EDebugMessageType::Log, "[ATurnBasedGameModeBase] GameModeSettings valid!");
 
+	return true;
+}
+
+bool ATurnBasedGameModeBase::InitializeUI()
+{
+	APlayerController* PlayerController = UGameplayStatics::GetPlayerController(this, 0);
+	
+	if (!IsValid(PlayerController))
+	{
+		UTurnBasedDebugLibrary::Print(EDebugMessageType::Error, "[ATurnBasedGameModeBase] Failed init, PlayerController invalid!");
+		return false;
+	}
+	
+	HUD = Cast<ATurnBasedHUDBase>(PlayerController->GetHUD());
+	
+	if (!IsValid(HUD))
+	{
+		UTurnBasedDebugLibrary::Print(EDebugMessageType::Error, "[ATurnBasedGameModeBase] Failed init, HUD invalid!");
+		return false;
+	}
+	
+	HUD->InitializeHUD();
+	
 	return true;
 }
 

@@ -2,7 +2,6 @@
 
 
 #include "TurnBasedJam/Public/Logic/GameModes/TurnBasedGameMode.h"
-
 #include "Kismet/GameplayStatics.h"
 #include "Logic/Debug/TurnBasedDebugLibrary.h"
 #include "Logic/FightActors/Hero.h"
@@ -10,9 +9,19 @@
 #include "Logic/GameModes/GameModesSettings.h"
 #include "Logic/TurnMechanic/TurnManager.h"
 
-bool ATurnBasedGameMode::InitializeGameMode()
+AHero* ATurnBasedGameMode::GetHero() const
 {
-	if (!Super::InitializeGameMode()) return false;
+	return Hero;
+}
+
+AVampire* ATurnBasedGameMode::GetVampire() const
+{
+	return Vampire;
+}
+
+bool ATurnBasedGameMode::InitializeGame()
+{
+	if (!Super::InitializeGame()) return false;
 
 	Hero = Cast<AHero>(UGameplayStatics::GetActorOfClass(this, AHero::StaticClass()));
 	
