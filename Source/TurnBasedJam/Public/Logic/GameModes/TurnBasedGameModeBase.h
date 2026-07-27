@@ -18,7 +18,8 @@ class TURNBASEDJAM_API ATurnBasedGameModeBase : public AGameModeBase
 protected:
 	virtual void BeginPlay() override;
 	
-	virtual void InitializeGameMode();
+	virtual bool InitializeGameMode();
+	virtual void StartGame();
 	
 	UPROPERTY()
 	const UGameModesSettings* GameModesSettings;

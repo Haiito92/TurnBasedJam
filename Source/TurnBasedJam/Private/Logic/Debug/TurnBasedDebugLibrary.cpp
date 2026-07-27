@@ -20,23 +20,25 @@ void UTurnBasedDebugLibrary::Print(const EDebugMessageType& MessageType, const F
 	{
 		case EDebugMessageType::Log:
 			{
+				FinalMessage = Message;
+				UE_LOGFMT(LogTemp, Log, "{0}", FinalMessage);
 				break;
 			}
 		case EDebugMessageType::Warning:
 			{
-				FinalMessage += "[Warning] ";
+				FinalMessage = "[Warning] " + Message;
 				FinalColor = FColor::Yellow;
+				UE_LOGFMT(LogTemp, Warning, "{0}", FinalMessage);
 				break;
 			}
 		case EDebugMessageType::Error:
 			{
-				FinalMessage += "[Error] ";
+				FinalMessage += "[Error] " + Message;
 				FinalColor = FColor::Red;
+				UE_LOGFMT(LogTemp, Error, "{0}", FinalMessage);
 				break;
 			}
 	}
-	
-	FinalMessage += Message;
 	
 	GEngine->AddOnScreenDebugMessage(
 		-1,
@@ -45,4 +47,4 @@ void UTurnBasedDebugLibrary::Print(const EDebugMessageType& MessageType, const F
 		FinalMessage);
 }
 
-bool UTurnBasedDebugLibrary::DebugOn = false;
+bool UTurnBasedDebugLibrary::DebugOn = true;

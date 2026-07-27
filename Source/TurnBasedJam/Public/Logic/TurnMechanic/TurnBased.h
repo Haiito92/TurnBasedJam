@@ -22,4 +22,9 @@ class TURNBASEDJAM_API ITurnBased
 
 	// Add interface functions to this class. This is the class that will be inherited to implement this interface.
 public:
+	UFUNCTION(BlueprintNativeEvent)
+	void StartTurn();
+	
+	UFUNCTION(BlueprintNativeEvent)
+	void EndTurn();
 };

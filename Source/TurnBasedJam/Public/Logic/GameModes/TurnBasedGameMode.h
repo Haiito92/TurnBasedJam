@@ -6,6 +6,8 @@
 #include "TurnBasedGameModeBase.h"
 #include "TurnBasedGameMode.generated.h"
 
+class AVampire;
+class AHero;
 class UTurnManager;
 /**
  * 
@@ -16,8 +18,15 @@ class TURNBASEDJAM_API ATurnBasedGameMode : public ATurnBasedGameModeBase
 	GENERATED_BODY()
 	
 protected:
-	virtual void InitializeGameMode() override;
+	virtual bool InitializeGameMode() override;
+	virtual void StartGame() override;
 private:
 	UPROPERTY()
 	TObjectPtr<UTurnManager> TurnManager;
+	
+	UPROPERTY()
+	TObjectPtr<AHero> Hero;
+	
+	UPROPERTY()
+	TObjectPtr<AVampire> Vampire;
 };

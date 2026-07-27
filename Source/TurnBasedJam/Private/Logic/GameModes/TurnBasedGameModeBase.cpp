@@ -10,17 +10,30 @@ void ATurnBasedGameModeBase::BeginPlay()
 {
 	Super::BeginPlay();
 	
-	InitializeGameMode();
+	if (!InitializeGameMode())
+	{
+		UTurnBasedDebugLibrary::Print(EDebugMessageType::Error, "[ATurnBasedGameModeBase] Initialization failed.");
+		return;
+	}
+	
+	
 }
 
-void ATurnBasedGameModeBase::InitializeGameMode()
+bool ATurnBasedGameModeBase::InitializeGameMode()
 {
 	GameModesSettings = GetDefault<UGameModesSettings>();
 	
 	if (!IsValid(GameModesSettings))
 	{
 		UTurnBasedDebugLibrary::Print(EDebugMessageType::Error, "[ATurnBasedGameModeBase] GameModeSettings invalid!");
-		return;
+		return false;
 	}
 	else UTurnBasedDebugLibrary::Print(EDebugMessageType::Log, "[ATurnBasedGameModeBase] GameModeSettings valid!");
+
+	return true;
+}
+
+void ATurnBasedGameModeBase::StartGame()
+{
+	
 }
