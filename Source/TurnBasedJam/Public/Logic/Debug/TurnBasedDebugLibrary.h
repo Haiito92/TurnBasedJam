@@ -23,7 +23,10 @@ class TURNBASEDJAM_API UTurnBasedDebugLibrary : public UBlueprintFunctionLibrary
 	GENERATED_BODY()
 	
 public:
+	UFUNCTION(BlueprintCallable)
 	static void ToggleDebug(bool InDebugOn);
+	
+	UFUNCTION(BlueprintCallable)
 	static void Print(const EDebugMessageType& MessageType, const FString& Message, float TimeToDisplay = 3.0f);
 private:
 	static bool DebugOn;	

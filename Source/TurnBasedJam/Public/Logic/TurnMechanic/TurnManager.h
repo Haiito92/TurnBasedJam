@@ -13,4 +13,8 @@ UCLASS(Blueprintable, BlueprintType)
 class TURNBASEDJAM_API UTurnManager : public UObject
 {
 	GENERATED_BODY()
+	
+public:
+	UFUNCTION()
+	void StartFight();
 };
