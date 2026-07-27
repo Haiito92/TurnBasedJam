@@ -16,7 +16,7 @@ void ATurnBasedGameModeBase::BeginPlay()
 		return;
 	}
 	
-	
+	StartGame();
 }
 
 bool ATurnBasedGameModeBase::InitializeGameMode()

@@ -14,5 +14,7 @@ class TURNBASEDJAM_API AVampire : public ATurnBasedActor
 public:
 	// Sets default values for this actor's properties
 	AVampire();
-
+	
+	virtual void PrepareTurn_Implementation() override;
+	virtual void ChooseNextAction_Implementation() override;
 };
