@@ -14,4 +14,6 @@ class TURNBASEDJAM_API AHero : public ATurnBasedActor
 public:
 	// Sets default values for this actor's properties
 	AHero();
+	
+	virtual void ChooseNextAction_Implementation() override;
 };

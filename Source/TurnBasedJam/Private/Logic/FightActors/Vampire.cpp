@@ -22,8 +22,8 @@ void AVampire::PrepareTurn_Implementation()
 
 void AVampire::ChooseNextAction_Implementation()
 {
-	Super::ChooseNextAction_Implementation();
-	
 	UTurnBasedDebugLibrary::Print(EDebugMessageType::Log, "[Vampire] Action chosen!");
+
+	Super::ChooseNextAction_Implementation();
 }
 

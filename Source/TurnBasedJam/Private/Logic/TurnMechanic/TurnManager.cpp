@@ -60,5 +60,16 @@ void UTurnManager::FinalizeTurnPreparation()
 
 void UTurnManager::ResolveTurn()
 {
-	
+	GetWorld()->GetTimerManager().SetTimer(
+		TurnResolutionEndTimer,
+		this,
+		&UTurnManager::OnTurnResolutionEndTimerElapsed,
+		5.0f,
+		false);
+	UTurnBasedDebugLibrary::Print(EDebugMessageType::Warning, "[UTurnManager] Wait for next turn preparation in 5 seconds...");
+}
+
+void UTurnManager::OnTurnResolutionEndTimerElapsed()
+{
+	PrepareTurn();
 }

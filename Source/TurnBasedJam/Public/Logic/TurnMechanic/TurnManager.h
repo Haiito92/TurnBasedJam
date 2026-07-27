@@ -32,9 +32,15 @@ private:
 	UFUNCTION()
 	void ResolveTurn();
 	
+	void OnTurnResolutionEndTimerElapsed();
+	
+	
 	UPROPERTY()
 	TObjectPtr<ATurnBasedActor> Hero;
 	
 	UPROPERTY()
 	TObjectPtr<ATurnBasedActor> Vampire;
+	
+	UPROPERTY()
+	FTimerHandle TurnResolutionEndTimer;
 };

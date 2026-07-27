@@ -29,7 +29,7 @@ public:
 	UFUNCTION(BlueprintNativeEvent)
 	void FinalizeTurnPreparation();
 	
-	UFUNCTION(BlueprintNativeEvent)
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	void ChooseNextAction();
 	
 	UFUNCTION(BlueprintNativeEvent)
