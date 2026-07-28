@@ -6,6 +6,8 @@
 #include "UObject/Object.h"
 #include "TurnManager.generated.h"
 
+class UActionData;
+class ATurnBasedActor;
 /**
  * 
  */
@@ -16,5 +18,30 @@ class TURNBASEDJAM_API UTurnManager : public UObject
 	
 public:
 	UFUNCTION()
+	bool InitializeTurnManager(ATurnBasedActor* InHero, ATurnBasedActor* InVampire);
+	
+	UFUNCTION()
 	void StartFight();
+	
+private:
+	UFUNCTION()
+	void PrepareTurn();
+	UFUNCTION()
+	void OnHeroNextActionValidated(UActionData* ActionValidatedData);
+	UFUNCTION()
+	void FinalizeTurnPreparation();
+	UFUNCTION()
+	void ResolveTurn();
+	
+	void OnTurnResolutionEndTimerElapsed();
+	
+	
+	UPROPERTY()
+	TObjectPtr<ATurnBasedActor> Hero;
+	
+	UPROPERTY()
+	TObjectPtr<ATurnBasedActor> Vampire;
+	
+	UPROPERTY()
+	FTimerHandle TurnResolutionEndTimer;
 };

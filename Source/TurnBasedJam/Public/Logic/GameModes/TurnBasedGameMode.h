@@ -17,9 +17,16 @@ class TURNBASEDJAM_API ATurnBasedGameMode : public ATurnBasedGameModeBase
 {
 	GENERATED_BODY()
 	
+public:
+	UFUNCTION(BlueprintCallable)
+	AHero* GetHero() const;
+	UFUNCTION(BlueprintCallable)
+	AVampire* GetVampire() const;
+	
 protected:
-	virtual bool InitializeGameMode() override;
+	virtual bool InitializeGame() override;
 	virtual void StartGame() override;
+	
 private:
 	UPROPERTY()
 	TObjectPtr<UTurnManager> TurnManager;

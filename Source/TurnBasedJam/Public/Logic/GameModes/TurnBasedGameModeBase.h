@@ -6,10 +6,15 @@
 #include "GameFramework/GameModeBase.h"
 #include "TurnBasedGameModeBase.generated.h"
 
+class ATurnBasedPlayerControllerBase;
+class ATurnBasedHUDBase;
 class UGameModesSettings;
 /**
  * 
  */
+
+
+
 UCLASS()
 class TURNBASEDJAM_API ATurnBasedGameModeBase : public AGameModeBase
 {
@@ -18,9 +23,17 @@ class TURNBASEDJAM_API ATurnBasedGameModeBase : public AGameModeBase
 protected:
 	virtual void BeginPlay() override;
 	
-	virtual bool InitializeGameMode();
+	bool InitializeGameMode();
+	virtual bool InitializeGame();
+	virtual bool InitializeUI();
 	virtual void StartGame();
 	
 	UPROPERTY()
 	const UGameModesSettings* GameModesSettings;
+	
+	UPROPERTY()
+	TObjectPtr<ATurnBasedHUDBase> HUD;
+	
+	UPROPERTY()
+	TObjectPtr<ATurnBasedPlayerControllerBase> PlayerController;
 };

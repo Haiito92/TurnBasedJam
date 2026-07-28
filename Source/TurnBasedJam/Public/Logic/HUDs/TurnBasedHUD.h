@@ -9,6 +9,7 @@
 /**
  * 
  */
+
 UCLASS()
 class TURNBASEDJAM_API ATurnBasedHUD : public ATurnBasedHUDBase
 {

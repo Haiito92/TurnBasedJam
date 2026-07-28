@@ -14,5 +14,10 @@ class TURNBASEDJAM_API AVampire : public ATurnBasedActor
 public:
 	// Sets default values for this actor's properties
 	AVampire();
-
+	
+	virtual void PrepareTurn(ATurnBasedActor* Enemy) override;
+	
+private:
+	UPROPERTY()
+	UActionData* LastActionData;
 };
