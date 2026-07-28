@@ -16,4 +16,8 @@ public:
 	AVampire();
 	
 	virtual void PrepareTurn(ATurnBasedActor* Enemy) override;
+	
+private:
+	UPROPERTY()
+	UActionData* LastActionData;
 };

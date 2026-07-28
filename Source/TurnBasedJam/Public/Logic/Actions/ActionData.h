@@ -17,4 +17,10 @@ class TURNBASEDJAM_API UActionData : public UDataAsset
 public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
 	FText ActionName;
+	
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+	UTexture2D* Sprite;
+	
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+	FText Description;
 };

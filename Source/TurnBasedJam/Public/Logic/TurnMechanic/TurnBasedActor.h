@@ -23,6 +23,8 @@ public:
 	UFUNCTION(BlueprintCallable)
 	virtual void SetNextActionData(UActionData* Data);
 	UFUNCTION(BlueprintCallable)
+	virtual void SetNextActionCaster(ATurnBasedActor* Caster);
+	UFUNCTION(BlueprintCallable)
 	virtual void SetNextActionTarget(ATurnBasedActor* Target);
 	UFUNCTION(BlueprintCallable)
 	virtual void ValidateNextAction();
@@ -36,7 +38,7 @@ public:
 	UFUNCTION(BlueprintCallable)
 	TArray<UActionData*> GetActionsData() const;
 	
-	DECLARE_DYNAMIC_MULTICAST_DELEGATE(FNextActionValidatedSignature);
+	DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FNextActionValidatedSignature, UActionData*, ActionData);
 	UPROPERTY(BlueprintAssignable)
 	FNextActionValidatedSignature NextActionValidated;
 	

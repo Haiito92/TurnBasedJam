@@ -45,7 +45,7 @@ void UTurnManager::PrepareTurn()
 	Hero->PrepareTurn(Vampire);
 }
 
-void UTurnManager::OnHeroNextActionValidated()
+void UTurnManager::OnHeroNextActionValidated(UActionData* ActionValidatedData)
 {
 	FinalizeTurnPreparation();
 }

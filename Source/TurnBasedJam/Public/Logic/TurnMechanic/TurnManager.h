@@ -6,6 +6,7 @@
 #include "UObject/Object.h"
 #include "TurnManager.generated.h"
 
+class UActionData;
 class ATurnBasedActor;
 /**
  * 
@@ -26,7 +27,7 @@ private:
 	UFUNCTION()
 	void PrepareTurn();
 	UFUNCTION()
-	void OnHeroNextActionValidated();
+	void OnHeroNextActionValidated(UActionData* ActionValidatedData);
 	UFUNCTION()
 	void FinalizeTurnPreparation();
 	UFUNCTION()

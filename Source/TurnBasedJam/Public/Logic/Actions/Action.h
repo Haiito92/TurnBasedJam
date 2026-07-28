@@ -27,5 +27,8 @@ public:
 	TObjectPtr<UActionData> Data;
 	
 	UPROPERTY()
+	TObjectPtr<ATurnBasedActor> Caster;
+	
+	UPROPERTY()
 	TObjectPtr<ATurnBasedActor> Target;
 };

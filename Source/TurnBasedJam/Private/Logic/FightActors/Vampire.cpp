@@ -3,6 +3,8 @@
 
 #include "Logic/FightActors/Vampire.h"
 
+#include "Kismet/KismetMathLibrary.h"
+#include "Logic/Actions/ActionData.h"
 #include "Logic/Debug/TurnBasedDebugLibrary.h"
 
 
@@ -17,9 +19,35 @@ void AVampire::PrepareTurn(ATurnBasedActor* Enemy)
 {
 	TurnPreparationStarted.Broadcast();
 	
-	SetNextActionTarget(Enemy);
+	SetNextActionData(nullptr);
 	
-	//Action choice
+	SetNextActionCaster(this);
+	SetNextActionTarget(Enemy);
+
+
+	if (ActionsData.Num() > 0)
+	{
+		int index = UKismetMathLibrary::RandomInteger(ActionsData.Num());
+		
+		UActionData* ActionData = ActionsData[index];
+		
+		if (ActionData == LastActionData)
+		{
+			index = (index + 1) % ActionsData.Num();
+			ActionData = ActionsData[index];
+		}
+		
+		LastActionData = ActionData;
+		
+		SetNextActionData(ActionData);
+		
+		FString Message = "[AVampire] Vampire chose: " + ActionData->ActionName.ToString();
+		UTurnBasedDebugLibrary::Print(EDebugMessageType::Log, Message);
+	}
+	else
+	{
+		UTurnBasedDebugLibrary::Print(EDebugMessageType::Error, "[AVampire] Can't chose action, ActionsData.Num() == 0!");
+	}
 	
 	ValidateNextAction();
 }
