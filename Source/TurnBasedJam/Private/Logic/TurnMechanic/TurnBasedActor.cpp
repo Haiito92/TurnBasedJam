@@ -3,6 +3,7 @@
 
 #include "Logic/TurnMechanic/TurnBasedActor.h"
 
+#include "Logic/Actions/ActionSolver.h"
 #include "Logic/Debug/TurnBasedDebugLibrary.h"
 
 
@@ -54,6 +55,10 @@ void ATurnBasedActor::FinalizeTurnPreparation()
 void ATurnBasedActor::StartTurn()
 {
 	TurnStarted.Broadcast();
+	
+	UActionSolverLibrary::SolveAction(NextAction);
+	
+	EndTurn();
 }
 
 void ATurnBasedActor::EndTurn()
@@ -64,6 +69,11 @@ void ATurnBasedActor::EndTurn()
 TArray<UActionData*> ATurnBasedActor::GetActionsData() const
 {
 	return ActionsData;
+}
+
+FAction ATurnBasedActor::GetNextAction() const
+{
+	return NextAction;
 }
 
 

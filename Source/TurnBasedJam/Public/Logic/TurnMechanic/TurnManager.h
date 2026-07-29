@@ -6,6 +6,7 @@
 #include "UObject/Object.h"
 #include "TurnManager.generated.h"
 
+class UActionSolver;
 class UActionData;
 class ATurnBasedActor;
 /**
@@ -33,8 +34,12 @@ private:
 	UFUNCTION()
 	void ResolveTurn();
 	
-	void OnTurnResolutionEndTimerElapsed();
+	UFUNCTION()
+	void OnHeroTurnEnded();
+	UFUNCTION()
+	void OnVampireTurnEnded();
 	
+	void OnTurnResolutionEndTimerElapsed();
 	
 	UPROPERTY()
 	TObjectPtr<ATurnBasedActor> Hero;

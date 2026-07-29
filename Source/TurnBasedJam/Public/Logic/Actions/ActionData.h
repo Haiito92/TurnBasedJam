@@ -23,4 +23,7 @@ public:
 	
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
 	FText Description;
+	
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+	float Damage;
 };

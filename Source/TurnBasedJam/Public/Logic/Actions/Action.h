@@ -14,7 +14,7 @@
 class ATurnBasedActor;
 class UActionData;
 
-USTRUCT()
+USTRUCT(Blueprintable, BlueprintType)
 struct TURNBASEDJAM_API FAction
 {
 	GENERATED_BODY()

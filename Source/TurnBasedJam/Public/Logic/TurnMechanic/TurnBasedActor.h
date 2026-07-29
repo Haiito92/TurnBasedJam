@@ -38,6 +38,9 @@ public:
 	UFUNCTION(BlueprintCallable)
 	TArray<UActionData*> GetActionsData() const;
 	
+	UFUNCTION(BlueprintCallable)
+	FAction GetNextAction() const;
+	
 	DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FNextActionValidatedSignature, UActionData*, ActionData);
 	UPROPERTY(BlueprintAssignable)
 	FNextActionValidatedSignature NextActionValidated;

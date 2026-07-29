@@ -2,6 +2,8 @@
 
 
 #include "TurnBasedJam/Public/Logic/TurnMechanic/TurnManager.h"
+
+#include "Logic/Actions/ActionSolver.h"
 #include "Logic/Debug/TurnBasedDebugLibrary.h"
 #include "Logic/TurnMechanic/TurnBasedActor.h"
 
@@ -14,6 +16,7 @@ bool UTurnManager::InitializeTurnManager(ATurnBasedActor* InHero, ATurnBasedActo
 		return false;
 	}
 	Hero->NextActionValidated.AddDynamic(this, &UTurnManager::OnHeroNextActionValidated);
+	Hero->TurnEnded.AddDynamic(this, &UTurnManager::OnHeroTurnEnded);
 	
 	Vampire = InVampire;
 	if (!IsValid(Vampire))
@@ -21,7 +24,7 @@ bool UTurnManager::InitializeTurnManager(ATurnBasedActor* InHero, ATurnBasedActo
 		UTurnBasedDebugLibrary::Print(EDebugMessageType::Error, "[UTurnManager] Init failed, vampire invalid!");
 		return false;
 	}
-	
+	Vampire->TurnEnded.AddDynamic(this, &UTurnManager::OnVampireTurnEnded);
 	return true;
 }
 
@@ -60,6 +63,16 @@ void UTurnManager::FinalizeTurnPreparation()
 
 void UTurnManager::ResolveTurn()
 {
+	Hero->StartTurn();
+}
+
+void UTurnManager::OnHeroTurnEnded()
+{
+	Vampire->StartTurn();
+}
+
+void UTurnManager::OnVampireTurnEnded()
+{
 	GetWorld()->GetTimerManager().SetTimer(
 		TurnResolutionEndTimer,
 		this,
@@ -68,6 +81,7 @@ void UTurnManager::ResolveTurn()
 		false);
 	UTurnBasedDebugLibrary::Print(EDebugMessageType::Warning, "[UTurnManager] Wait for next turn preparation in 5 seconds...");
 }
+
 
 void UTurnManager::OnTurnResolutionEndTimerElapsed()
 {
