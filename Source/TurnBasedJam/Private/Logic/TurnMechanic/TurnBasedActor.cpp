@@ -23,13 +23,14 @@ ATurnBasedActor::ATurnBasedActor()
 
 void ATurnBasedActor::InitTurnBasedActor()
 {
+	Actions.Empty();
+	
 	for (const TSubclassOf<UAction>& ActionClass : ActionClasses)
 	{
 		UAction* Action = NewObject<UAction>(this, ActionClass);
 		
 		if (!IsValid(Action))
 		{
-			UTurnBasedDebugLibrary::Print(EDebugMessageType::Error, "[ATurnBasedActor] Invalid action class " + ActionClass->StaticClass()->GetName());
 			continue;
 		}
 		

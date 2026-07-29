@@ -23,6 +23,6 @@ public:
 	UFUNCTION(BlueprintCallable)
 	UActionData* GetActionData() const;
 protected:
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	TObjectPtr<UActionData> Data;
 };
