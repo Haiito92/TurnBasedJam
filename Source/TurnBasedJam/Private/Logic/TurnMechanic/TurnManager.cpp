@@ -3,7 +3,6 @@
 
 #include "TurnBasedJam/Public/Logic/TurnMechanic/TurnManager.h"
 
-#include "Logic/Actions/ActionSolver.h"
 #include "Logic/Debug/TurnBasedDebugLibrary.h"
 #include "Logic/TurnMechanic/TurnBasedActor.h"
 
@@ -48,7 +47,7 @@ void UTurnManager::PrepareTurn()
 	Hero->PrepareTurn(Vampire);
 }
 
-void UTurnManager::OnHeroNextActionValidated(UActionData* ActionValidatedData)
+void UTurnManager::OnHeroNextActionValidated(UAction* ActionValidatedData)
 {
 	FinalizeTurnPreparation();
 }

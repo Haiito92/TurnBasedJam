@@ -17,9 +17,6 @@ public:
 	UHealthComponent();
 
 	UFUNCTION(BlueprintCallable)
-	void InitializeComponent() override;
-	
-	UFUNCTION(BlueprintCallable)
 	void TakeDamage(float Damage);
 	UFUNCTION(BlueprintCallable)
 	void Heal(float Heal);

@@ -6,29 +6,23 @@
 #include "UObject/Object.h"
 #include "Action.generated.h"
 
+class UActionData;
+class ATurnBasedActor;
 /**
  * 
  */
-
-
-class ATurnBasedActor;
-class UActionData;
-
-USTRUCT(Blueprintable, BlueprintType)
-struct TURNBASEDJAM_API FAction
+UCLASS(BlueprintType, Blueprintable)
+class TURNBASEDJAM_API UAction : public UObject
 {
 	GENERATED_BODY()
 	
 public:
-	FAction() = default;
-	~FAction() = default;
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
+	bool ApplyActionStrategy(ATurnBasedActor* ActionTarget);
 	
-	UPROPERTY()
+	UFUNCTION(BlueprintCallable)
+	UActionData* GetActionData() const;
+protected:
+	UPROPERTY(EditAnywhere)
 	TObjectPtr<UActionData> Data;
-	
-	UPROPERTY()
-	TObjectPtr<ATurnBasedActor> Caster;
-	
-	UPROPERTY()
-	TObjectPtr<ATurnBasedActor> Target;
 };

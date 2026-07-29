@@ -4,9 +4,11 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
-#include "Logic/Actions/Action.h"
+#include "Logic/Actions/ActionContext.h"
+#include "Logic/Health/HealthComponent.h"
 #include "TurnBasedActor.generated.h"
 
+class UHealthComponent;
 class UActionData;
 
 UCLASS()
@@ -19,9 +21,12 @@ public:
 	ATurnBasedActor();
 
 	UFUNCTION(BlueprintCallable)
+	void InitTurnBasedActor();
+	
+	UFUNCTION(BlueprintCallable)
 	virtual void PrepareTurn(ATurnBasedActor* Enemy);
 	UFUNCTION(BlueprintCallable)
-	virtual void SetNextActionData(UActionData* Data);
+	virtual void SetNextAction(UAction* InAction);
 	UFUNCTION(BlueprintCallable)
 	virtual void SetNextActionCaster(ATurnBasedActor* Caster);
 	UFUNCTION(BlueprintCallable)
@@ -36,12 +41,15 @@ public:
 	virtual void EndTurn();	
 	
 	UFUNCTION(BlueprintCallable)
-	TArray<UActionData*> GetActionsData() const;
+	const TArray<UAction*>& GetActions() const;
 	
 	UFUNCTION(BlueprintCallable)
-	FAction GetNextAction() const;
+	FActionContext GetNextAction() const;
 	
-	DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FNextActionValidatedSignature, UActionData*, ActionData);
+	UFUNCTION(BlueprintCallable, BlueprintPure)
+	UHealthComponent* GetHealthComponent();
+	
+	DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FNextActionValidatedSignature, UAction*, Action);
 	UPROPERTY(BlueprintAssignable)
 	FNextActionValidatedSignature NextActionValidated;
 	
@@ -63,13 +71,17 @@ public:
 	
 protected:
 	UPROPERTY(EditAnywhere, Category="Turn Based Actor|Turn Actions")
-	TArray<UActionData*> ActionsData;
+	TArray<TSubclassOf<UAction>> ActionClasses;
 	
 	UPROPERTY()
-	FAction NextAction;
+	TArray<TObjectPtr<UAction>> Actions;
 	
+	UPROPERTY()
+	FActionContext NextAction;
 private:
 	UPROPERTY(EditAnywhere)
 	TObjectPtr<UStaticMeshComponent> ActorMesh;
 	
+	UPROPERTY(EditAnywhere)
+	TObjectPtr<UHealthComponent> HealthComponent;
 };

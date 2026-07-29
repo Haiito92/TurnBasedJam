@@ -25,13 +25,14 @@ bool ATurnBasedGameMode::InitializeGame()
 	if (!Super::InitializeGame()) return false;
 
 	Hero = Cast<AHero>(UGameplayStatics::GetActorOfClass(this, AHero::StaticClass()));
-	
 	if (!IsValid(Hero))
 	{
 		UTurnBasedDebugLibrary::Print(EDebugMessageType::Error, "[ATurnBasedGameMode] Failed init, invalid Hero.");
 		return false;
 	}
 	UTurnBasedDebugLibrary::Print(EDebugMessageType::Log, "[ATurnBasedGameMode] Hero valid!");
+	
+	Hero->InitTurnBasedActor();
 	
 	Vampire = Cast<AVampire>(UGameplayStatics::GetActorOfClass(this, AVampire::StaticClass()));
 	if (!IsValid(Vampire))
@@ -41,8 +42,9 @@ bool ATurnBasedGameMode::InitializeGame()
 	}
 	UTurnBasedDebugLibrary::Print(EDebugMessageType::Log, "[ATurnBasedGameMode] Vampire valid!");
 
-	TurnManager = NewObject<UTurnManager>(this, GameModesSettings->TurnManagerClass.LoadSynchronous());
+	Vampire->InitTurnBasedActor();
 	
+	TurnManager = NewObject<UTurnManager>(this, GameModesSettings->TurnManagerClass.LoadSynchronous());
 	if (!IsValid(TurnManager))
 	{
 		UTurnBasedDebugLibrary::Print(EDebugMessageType::Error, "[ATurnBasedGameMode] Failed init, invalid TurnManager.");

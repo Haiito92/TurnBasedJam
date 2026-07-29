@@ -3,10 +3,10 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "UObject/Object.h"
+#include "Kismet/BlueprintFunctionLibrary.h"
 #include "ActionSolver.generated.h"
 
-struct FAction;
+struct FActionContext;
 /**
  * 
  */
@@ -17,5 +17,5 @@ class TURNBASEDJAM_API UActionSolverLibrary : public UBlueprintFunctionLibrary
 	
 public:
 	UFUNCTION(BlueprintCallable)
-	static void SolveAction(const FAction& Action);
+	static void SolveAction(const FActionContext& ActionContext);
 };

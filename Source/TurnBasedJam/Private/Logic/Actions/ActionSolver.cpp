@@ -3,13 +3,14 @@
 
 #include "Logic/Actions/ActionSolver.h"
 
+#include "Logic/Actions/ActionContext.h"
 #include "Logic/Actions/Action.h"
 #include "Logic/Debug/TurnBasedDebugLibrary.h"
 
-void UActionSolverLibrary::SolveAction(const FAction& Action)
+void UActionSolverLibrary::SolveAction(const FActionContext& ActionContext)
 {
 	UTurnBasedDebugLibrary::Print(EDebugMessageType::Log,
-		"[UActionSolverLibrary] Solving action casted by " + Action.Caster.GetName() + " on " + Action.Target.GetName() + ".");
+		"[UActionSolverLibrary] Solving action casted by " + ActionContext.Caster.GetName() + " on " + ActionContext.Target.GetName() + ".");
 
-	
+	ActionContext.Action->ApplyActionStrategy(ActionContext.Target);
 }

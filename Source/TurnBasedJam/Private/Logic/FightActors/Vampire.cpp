@@ -4,6 +4,7 @@
 #include "Logic/FightActors/Vampire.h"
 
 #include "Kismet/KismetMathLibrary.h"
+#include "Logic/Actions/Action.h"
 #include "Logic/Actions/ActionData.h"
 #include "Logic/Debug/TurnBasedDebugLibrary.h"
 
@@ -19,30 +20,38 @@ void AVampire::PrepareTurn(ATurnBasedActor* Enemy)
 {
 	TurnPreparationStarted.Broadcast();
 	
-	SetNextActionData(nullptr);
+	SetNextAction(nullptr);
 	
 	SetNextActionCaster(this);
 	SetNextActionTarget(Enemy);
 
 
-	if (ActionsData.Num() > 0)
+	if (Actions.Num() > 0)
 	{
-		int index = UKismetMathLibrary::RandomInteger(ActionsData.Num());
+		int index = UKismetMathLibrary::RandomInteger(Actions.Num());
 		
-		UActionData* ActionData = ActionsData[index];
+		UAction* Action = Actions[index];
 		
-		if (ActionData == LastActionData)
+		if (Action == LastAction)
 		{
-			index = (index + 1) % ActionsData.Num();
-			ActionData = ActionsData[index];
+			index = (index + 1) % Actions.Num();
+			Action = Actions[index];
 		}
 		
-		LastActionData = ActionData;
+		LastAction = Action;
 		
-		SetNextActionData(ActionData);
+		SetNextAction(Action);
 		
-		FString Message = "[AVampire] Vampire chose: " + ActionData->ActionName.ToString();
-		UTurnBasedDebugLibrary::Print(EDebugMessageType::Log, Message);
+		if (IsValid(Action->GetActionData()))
+		{
+			FString Message = "[AVampire] Vampire chose: " + Action->GetActionData()->ActionName.ToString();
+			UTurnBasedDebugLibrary::Print(EDebugMessageType::Log, Message);
+		}
+		else
+		{
+			UTurnBasedDebugLibrary::Print(EDebugMessageType::Warning, "[AVampire] Can't log action chosen name because data is nullptr ");
+		}
+		
 	}
 	else
 	{
