@@ -11,6 +11,8 @@
  * 
  */
 
+class ATurnBasedActor;
+
 UENUM()
 enum class EStatusGroup: uint8
 {
@@ -20,15 +22,12 @@ enum class EStatusGroup: uint8
 	ActorEndTurn
 };
 
-USTRUCT()
-struct TURNBASEDJAM_API FStatus
+UCLASS()
+class TURNBASEDJAM_API UStatus : public UObject
 {
 	GENERATED_BODY()
 	
 public:
-	FStatus() = default;
-	~FStatus() = default;
-
 	UPROPERTY()
 	EStatusEnum Enum = EStatusEnum::ST_None;
 	
@@ -37,4 +36,11 @@ public:
 	
 	UPROPERTY()
 	EStatusGroup Group = EStatusGroup::GlobalStartTurn;
+	
+	UFUNCTION(BlueprintCallable)
+	virtual void ApplyStatus(ATurnBasedActor* Target);
+	UFUNCTION(BlueprintCallable)
+	virtual void TickStatus(ATurnBasedActor* Target);
+	UFUNCTION(BlueprintCallable)
+	virtual void RemoveStatus(ATurnBasedActor* Target);
 };
