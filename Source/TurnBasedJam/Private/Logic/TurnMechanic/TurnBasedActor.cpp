@@ -36,6 +36,12 @@ void ATurnBasedActor::InitTurnBasedActor()
 		
 		Actions.Add(Action);
 	}
+	
+	if (IsValid(HealthComponent))
+	{
+		HealthComponent->InitHealthComponent();
+	}
+	else UTurnBasedDebugLibrary::Print(EDebugMessageType::Error, "[ATurnBasedActor] Failed to fully init, health component invalid!");
 }
 
 void ATurnBasedActor::PrepareTurn(ATurnBasedActor* Enemy)

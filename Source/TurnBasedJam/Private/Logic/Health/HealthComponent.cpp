@@ -14,6 +14,11 @@ UHealthComponent::UHealthComponent()
 	// ...
 }
 
+void UHealthComponent::InitHealthComponent()
+{
+	Health = MaxHealth;
+}
+
 
 void UHealthComponent::TakeDamage(float Damage)
 {

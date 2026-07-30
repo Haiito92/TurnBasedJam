@@ -15,6 +15,9 @@ class TURNBASEDJAM_API UHealthComponent : public UActorComponent
 public:
 	// Sets default values for this component's properties
 	UHealthComponent();
+	
+	UFUNCTION(BlueprintCallable)
+	void InitHealthComponent();
 
 	UFUNCTION(BlueprintCallable)
 	void TakeDamage(float Damage);
@@ -24,9 +27,9 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void Die();
 	
-	UFUNCTION()
+	UFUNCTION(BlueprintCallable)
 	float GetMaxHealth() const;
-	UFUNCTION()
+	UFUNCTION(BlueprintCallable)
 	float GetHealth() const;
 	
 	DECLARE_DYNAMIC_MULTICAST_DELEGATE(FDamagedSignature);
