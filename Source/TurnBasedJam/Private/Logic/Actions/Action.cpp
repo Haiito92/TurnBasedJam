@@ -20,3 +20,8 @@ UActionData* UAction::GetActionData() const
 {
 	return Data;
 }
+
+const TArray<TSubclassOf<UStatus>>& UAction::GetStatusClassesToApply() const
+{
+	return StatusClassesToApply;
+}

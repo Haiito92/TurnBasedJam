@@ -10,8 +10,9 @@
  * 
  */
 UENUM()
-enum class EStatusEnum
+enum class EStatusEnum:uint8
 {
 	ST_None,
-	ST_Block
+	ST_Block,
+	ST_Poison
 };

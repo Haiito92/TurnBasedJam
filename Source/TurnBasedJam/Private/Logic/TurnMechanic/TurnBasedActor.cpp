@@ -7,6 +7,7 @@
 #include "Logic/Actions/ActionSolver.h"
 #include "Logic/Debug/TurnBasedDebugLibrary.h"
 #include "Logic/Health/HealthComponent.h"
+#include "Logic/Status/StatusComponent.h"
 
 
 // Sets default values
@@ -19,6 +20,7 @@ ATurnBasedActor::ATurnBasedActor()
 	SetRootComponent(ActorMesh);
 	
 	HealthComponent = CreateDefaultSubobject<UHealthComponent>("HealthComponent");
+	StatusComponent = CreateDefaultSubobject<UStatusComponent>("StatusComponent");
 }
 
 void ATurnBasedActor::InitTurnBasedActor()
@@ -106,6 +108,11 @@ FActionContext ATurnBasedActor::GetNextAction() const
 UHealthComponent* ATurnBasedActor::GetHealthComponent()
 {
 	return HealthComponent;
+}
+
+UStatusComponent* ATurnBasedActor::GetStatusComponent()
+{
+	return StatusComponent;
 }
 
 

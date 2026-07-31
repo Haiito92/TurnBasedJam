@@ -32,7 +32,7 @@ void AVampire::PrepareTurn(ATurnBasedActor* Enemy)
 		
 		UAction* Action = Actions[index];
 		
-		if (Action == LastAction)
+		if (Action == LastAction && Actions.Num() > 1)
 		{
 			index = (index + 1) % Actions.Num();
 			Action = Actions[index];

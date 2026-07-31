@@ -22,25 +22,25 @@ enum class EStatusGroup: uint8
 	ActorEndTurn
 };
 
-UCLASS()
+UCLASS(Blueprintable, BlueprintType)
 class TURNBASEDJAM_API UStatus : public UObject
 {
 	GENERATED_BODY()
 	
 public:
-	UPROPERTY()
+	UPROPERTY(EditAnywhere, Category="Status")
 	EStatusEnum Enum = EStatusEnum::ST_None;
 	
-	UPROPERTY()
+	UPROPERTY(EditAnywhere, Category="Status")
 	int Lifespan = 1;
 	
-	UPROPERTY()
+	UPROPERTY(EditAnywhere, Category="Status")
 	EStatusGroup Group = EStatusGroup::GlobalStartTurn;
 	
-	UFUNCTION(BlueprintCallable)
-	virtual void ApplyStatus(ATurnBasedActor* Target);
-	UFUNCTION(BlueprintCallable)
-	virtual void TickStatus(ATurnBasedActor* Target);
-	UFUNCTION(BlueprintCallable)
-	virtual void RemoveStatus(ATurnBasedActor* Target);
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
+	void ApplyStatus(ATurnBasedActor* Target);
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
+	void TickStatus(ATurnBasedActor* Target);
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
+	void RemoveStatus(ATurnBasedActor* Target);
 };

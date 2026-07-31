@@ -6,6 +6,7 @@
 #include "UObject/Object.h"
 #include "Action.generated.h"
 
+class UStatus;
 class UActionData;
 class ATurnBasedActor;
 /**
@@ -22,7 +23,14 @@ public:
 	
 	UFUNCTION(BlueprintCallable)
 	UActionData* GetActionData() const;
+	
+	UFUNCTION(BlueprintCallable)
+	const TArray<TSubclassOf<UStatus>>& GetStatusClassesToApply() const;
+	
 protected:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	TObjectPtr<UActionData> Data;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	TArray<TSubclassOf<UStatus>> StatusClassesToApply;
 };

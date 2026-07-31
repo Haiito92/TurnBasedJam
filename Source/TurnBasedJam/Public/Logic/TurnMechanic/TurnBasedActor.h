@@ -8,6 +8,7 @@
 #include "Logic/Health/HealthComponent.h"
 #include "TurnBasedActor.generated.h"
 
+class UStatusComponent;
 class UHealthComponent;
 class UActionData;
 
@@ -49,6 +50,9 @@ public:
 	UFUNCTION(BlueprintCallable, BlueprintPure)
 	UHealthComponent* GetHealthComponent();
 	
+	UFUNCTION(BlueprintCallable, BlueprintPure)
+	UStatusComponent* GetStatusComponent();
+	
 	DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FNextActionValidatedSignature, UAction*, Action);
 	UPROPERTY(BlueprintAssignable)
 	FNextActionValidatedSignature NextActionValidated;
@@ -78,10 +82,14 @@ protected:
 	
 	UPROPERTY()
 	FActionContext NextAction;
+
 private:
 	UPROPERTY(EditAnywhere)
 	TObjectPtr<UStaticMeshComponent> ActorMesh;
 	
 	UPROPERTY(EditAnywhere)
 	TObjectPtr<UHealthComponent> HealthComponent;
+	
+	UPROPERTY(EditAnywhere)
+	TObjectPtr<UStatusComponent> StatusComponent;
 };
