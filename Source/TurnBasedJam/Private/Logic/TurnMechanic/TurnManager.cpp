@@ -4,6 +4,7 @@
 #include "TurnBasedJam/Public/Logic/TurnMechanic/TurnManager.h"
 
 #include "Logic/Debug/TurnBasedDebugLibrary.h"
+#include "Logic/Status/StatusSolver.h"
 #include "Logic/TurnMechanic/TurnBasedActor.h"
 
 bool UTurnManager::InitializeTurnManager(ATurnBasedActor* InHero, ATurnBasedActor* InVampire)
@@ -62,16 +63,38 @@ void UTurnManager::FinalizeTurnPreparation()
 
 void UTurnManager::ResolveTurn()
 {
+	UStatusSolver::TickStatus({EStatusGroup::GlobalStartTurn, Hero});
+	UStatusSolver::TickStatus({EStatusGroup::GlobalStartTurn, Vampire});
+	
+	UStatusSolver::PurgeStatus({EStatusGroup::GlobalStartTurn, Hero});
+	UStatusSolver::PurgeStatus({EStatusGroup::GlobalStartTurn, Vampire});
+	
+	UStatusSolver::TickStatus({EStatusGroup::ActorStartTurn, Hero});
+	UStatusSolver::PurgeStatus({EStatusGroup::ActorStartTurn, Hero});
 	Hero->StartTurn();
 }
 
 void UTurnManager::OnHeroTurnEnded()
 {
+	UStatusSolver::TickStatus({EStatusGroup::ActorEndTurn, Hero});
+	UStatusSolver::PurgeStatus({EStatusGroup::ActorEndTurn, Hero});
+	
+	UStatusSolver::TickStatus({EStatusGroup::ActorStartTurn, Vampire});
+	UStatusSolver::PurgeStatus({EStatusGroup::ActorStartTurn, Vampire});
 	Vampire->StartTurn();
 }
 
 void UTurnManager::OnVampireTurnEnded()
 {
+	UStatusSolver::TickStatus({EStatusGroup::ActorEndTurn, Vampire});
+	UStatusSolver::PurgeStatus({EStatusGroup::ActorEndTurn, Vampire});
+	
+	UStatusSolver::TickStatus({EStatusGroup::GlobalEndTurn, Hero});
+	UStatusSolver::TickStatus({EStatusGroup::GlobalEndTurn, Vampire});
+	
+	UStatusSolver::PurgeStatus({EStatusGroup::GlobalEndTurn, Hero});
+	UStatusSolver::PurgeStatus({EStatusGroup::GlobalEndTurn, Vampire});
+	
 	GetWorld()->GetTimerManager().SetTimer(
 		TurnResolutionEndTimer,
 		this,

@@ -16,22 +16,28 @@ UStatusComponent::UStatusComponent()
 	// ...
 }
 
-void UStatusComponent::ApplyStatus(const TSubclassOf<UStatus>& StatusClass)
+bool UStatusComponent::ApplyStatus(const TSubclassOf<UStatus>& StatusClass, UStatus* InOutStatus)
 {
 	UStatus* Status = NewObject<UStatus>(this, StatusClass);
 	if (HasStatus(Status->Enum))
 	{
 		UTurnBasedDebugLibrary::Print(EDebugMessageType::Warning, "[UStatusComponent] Can't apply status already applied: " + StatusClass->GetName());
-		return;
+		return false;
 	}
 	
 	AppliedStatus.Add(Status);
+	InOutStatus = Status;
+	return true;
 }
 
-void UStatusComponent::RemoveStatus(const TSubclassOf<UStatus>& StatusClass)
+bool UStatusComponent::RemoveStatus(UStatus* Status)
 {
+	TArray<TObjectPtr<UStatus>>::SizeType NbRemoved = AppliedStatus.Remove(Status);
 	
+	return NbRemoved != 0;
 }
+
+
 
 bool UStatusComponent::HasStatus(const EStatusEnum& StatusEnum) const
 {

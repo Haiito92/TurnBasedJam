@@ -9,6 +9,7 @@ void UStatus::ApplyStatus_Implementation(ATurnBasedActor* Target)
 
 void UStatus::TickStatus_Implementation(ATurnBasedActor* Target)
 {
+	Lifespan--;
 }
 
 void UStatus::RemoveStatus_Implementation(ATurnBasedActor* Target)

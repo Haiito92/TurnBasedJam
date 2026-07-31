@@ -20,10 +20,10 @@ public:
 	UStatusComponent();
 
 	UFUNCTION(BlueprintCallable, meta=(AutoCreateRefTerm="StatusClass"))
-	void ApplyStatus(const TSubclassOf<UStatus>& StatusClass);
+	bool ApplyStatus(const TSubclassOf<UStatus>& StatusClass, UStatus* InOutStatus);
 	
-	UFUNCTION(BlueprintCallable, meta=(AutoCreateRefTerm="StatusClass"))
-	void RemoveStatus(const TSubclassOf<UStatus>& StatusClass);
+	UFUNCTION(BlueprintCallable)
+	bool RemoveStatus(UStatus* Status);
 	
 	UFUNCTION(BlueprintCallable, meta=(AutoCreateRefTerm="StatusEnum"))
 	bool HasStatus(const EStatusEnum& StatusEnum) const;
