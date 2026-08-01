@@ -19,9 +19,13 @@ UStatusComponent::UStatusComponent()
 bool UStatusComponent::ApplyStatus(const TSubclassOf<UStatus>& StatusClass, UStatus* InOutStatus)
 {
 	UStatus* Status = NewObject<UStatus>(this, StatusClass);
-	if (HasStatus(Status->Enum))
+	if (HasStatus(Status->GetEnum()) && Status->GetDuplicity() == EStatusDuplicity::Solo)
 	{
-		UTurnBasedDebugLibrary::Print(EDebugMessageType::Warning, "[UStatusComponent] Can't apply status already applied: " + StatusClass->GetName());
+		//UTurnBasedDebugLibrary::Print(EDebugMessageType::Warning, "[UStatusComponent] Can't apply solo status already applied: " + StatusClass->GetName());
+		
+		UStatus* SoloStatus = GetFirstAppliedStatusByEnum(Status->GetEnum());
+		SoloStatus->ResetStatus();
+		InOutStatus = SoloStatus;
 		return false;
 	}
 	
@@ -43,7 +47,7 @@ bool UStatusComponent::HasStatus(const EStatusEnum& StatusEnum) const
 {
 	for (UStatus* Status : AppliedStatus)
 	{
-		if (Status->Enum == StatusEnum) return true;
+		if (Status->GetEnum() == StatusEnum) return true;
 	}
 	
 	return false;
@@ -60,17 +64,17 @@ TArray<UStatus*> UStatusComponent::GetAppliedStatusByGroup(const EStatusGroup& G
 	
 	for (UStatus* Status : AppliedStatus)
 	{
-		if (Status->Group == Group) StatusToReturn.Add(Status);
+		if (Status->GetGroup() == Group) StatusToReturn.Add(Status);
 	}
 	
 	return StatusToReturn;
 }
 
-const UStatus* UStatusComponent::GetFirstAppliedStatusByEnum(const EStatusEnum& StatusEnum) const
+UStatus* UStatusComponent::GetFirstAppliedStatusByEnum(const EStatusEnum& StatusEnum)
 {
-	const UStatus* FoundStatus = AppliedStatus.FindByPredicate([&](const UStatus* Status)
+	UStatus* FoundStatus = AppliedStatus.FindByPredicate([&](const UStatus* Status)
 	{
-		return Status->Enum == StatusEnum;
+		return Status->GetEnum() == StatusEnum;
 	})->Get();
 	
 	return FoundStatus;
