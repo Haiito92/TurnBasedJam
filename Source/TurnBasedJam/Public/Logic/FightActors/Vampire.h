@@ -19,5 +19,5 @@ public:
 	
 private:
 	UPROPERTY()
-	UActionData* LastActionData;
+	UAction* LastAction;
 };

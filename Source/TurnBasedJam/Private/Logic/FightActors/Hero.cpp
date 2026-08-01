@@ -13,7 +13,7 @@ AHero::AHero()
 
 void AHero::PrepareTurn(ATurnBasedActor* Enemy)
 {
-	SetNextActionData(nullptr); // Reset to null
+	SetNextAction(nullptr); // Reset to null
 	SetNextActionCaster(this);
 	SetNextActionTarget(this); // All hero action target himself so I'm just doing this, faster even if not clean
 	

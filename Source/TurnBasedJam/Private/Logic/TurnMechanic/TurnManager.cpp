@@ -2,7 +2,9 @@
 
 
 #include "TurnBasedJam/Public/Logic/TurnMechanic/TurnManager.h"
+
 #include "Logic/Debug/TurnBasedDebugLibrary.h"
+#include "Logic/Status/StatusSolver.h"
 #include "Logic/TurnMechanic/TurnBasedActor.h"
 
 bool UTurnManager::InitializeTurnManager(ATurnBasedActor* InHero, ATurnBasedActor* InVampire)
@@ -14,6 +16,7 @@ bool UTurnManager::InitializeTurnManager(ATurnBasedActor* InHero, ATurnBasedActo
 		return false;
 	}
 	Hero->NextActionValidated.AddDynamic(this, &UTurnManager::OnHeroNextActionValidated);
+	Hero->TurnEnded.AddDynamic(this, &UTurnManager::OnHeroTurnEnded);
 	
 	Vampire = InVampire;
 	if (!IsValid(Vampire))
@@ -21,7 +24,7 @@ bool UTurnManager::InitializeTurnManager(ATurnBasedActor* InHero, ATurnBasedActo
 		UTurnBasedDebugLibrary::Print(EDebugMessageType::Error, "[UTurnManager] Init failed, vampire invalid!");
 		return false;
 	}
-	
+	Vampire->TurnEnded.AddDynamic(this, &UTurnManager::OnVampireTurnEnded);
 	return true;
 }
 
@@ -45,7 +48,7 @@ void UTurnManager::PrepareTurn()
 	Hero->PrepareTurn(Vampire);
 }
 
-void UTurnManager::OnHeroNextActionValidated(UActionData* ActionValidatedData)
+void UTurnManager::OnHeroNextActionValidated(UAction* ActionValidatedData)
 {
 	FinalizeTurnPreparation();
 }
@@ -60,6 +63,38 @@ void UTurnManager::FinalizeTurnPreparation()
 
 void UTurnManager::ResolveTurn()
 {
+	UStatusSolver::TickStatus({EStatusGroup::GlobalStartTurn, Hero});
+	UStatusSolver::TickStatus({EStatusGroup::GlobalStartTurn, Vampire});
+	
+	UStatusSolver::PurgeStatus({EStatusGroup::GlobalStartTurn, Hero});
+	UStatusSolver::PurgeStatus({EStatusGroup::GlobalStartTurn, Vampire});
+	
+	UStatusSolver::TickStatus({EStatusGroup::ActorStartTurn, Hero});
+	UStatusSolver::PurgeStatus({EStatusGroup::ActorStartTurn, Hero});
+	Hero->StartTurn();
+}
+
+void UTurnManager::OnHeroTurnEnded()
+{
+	UStatusSolver::TickStatus({EStatusGroup::ActorEndTurn, Hero});
+	UStatusSolver::PurgeStatus({EStatusGroup::ActorEndTurn, Hero});
+	
+	UStatusSolver::TickStatus({EStatusGroup::ActorStartTurn, Vampire});
+	UStatusSolver::PurgeStatus({EStatusGroup::ActorStartTurn, Vampire});
+	Vampire->StartTurn();
+}
+
+void UTurnManager::OnVampireTurnEnded()
+{
+	UStatusSolver::TickStatus({EStatusGroup::ActorEndTurn, Vampire});
+	UStatusSolver::PurgeStatus({EStatusGroup::ActorEndTurn, Vampire});
+	
+	UStatusSolver::TickStatus({EStatusGroup::GlobalEndTurn, Hero});
+	UStatusSolver::TickStatus({EStatusGroup::GlobalEndTurn, Vampire});
+	
+	UStatusSolver::PurgeStatus({EStatusGroup::GlobalEndTurn, Hero});
+	UStatusSolver::PurgeStatus({EStatusGroup::GlobalEndTurn, Vampire});
+	
 	GetWorld()->GetTimerManager().SetTimer(
 		TurnResolutionEndTimer,
 		this,
@@ -68,6 +103,7 @@ void UTurnManager::ResolveTurn()
 		false);
 	UTurnBasedDebugLibrary::Print(EDebugMessageType::Warning, "[UTurnManager] Wait for next turn preparation in 5 seconds...");
 }
+
 
 void UTurnManager::OnTurnResolutionEndTimerElapsed()
 {

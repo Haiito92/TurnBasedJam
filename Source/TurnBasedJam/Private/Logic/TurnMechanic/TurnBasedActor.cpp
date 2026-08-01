@@ -3,7 +3,11 @@
 
 #include "Logic/TurnMechanic/TurnBasedActor.h"
 
+#include "Logic/Actions/Action.h"
+#include "Logic/Actions/ActionSolver.h"
 #include "Logic/Debug/TurnBasedDebugLibrary.h"
+#include "Logic/Health/HealthComponent.h"
+#include "Logic/Status/StatusComponent.h"
 
 
 // Sets default values
@@ -14,15 +18,41 @@ ATurnBasedActor::ATurnBasedActor()
 	
 	ActorMesh = CreateDefaultSubobject<UStaticMeshComponent>("ActorMesh");
 	SetRootComponent(ActorMesh);
+	
+	HealthComponent = CreateDefaultSubobject<UHealthComponent>("HealthComponent");
+	StatusComponent = CreateDefaultSubobject<UStatusComponent>("StatusComponent");
+}
+
+void ATurnBasedActor::InitTurnBasedActor()
+{
+	Actions.Empty();
+	
+	for (const TSubclassOf<UAction>& ActionClass : ActionClasses)
+	{
+		UAction* Action = NewObject<UAction>(this, ActionClass);
+		
+		if (!IsValid(Action))
+		{
+			continue;
+		}
+		
+		Actions.Add(Action);
+	}
+	
+	if (IsValid(HealthComponent))
+	{
+		HealthComponent->InitHealthComponent();
+	}
+	else UTurnBasedDebugLibrary::Print(EDebugMessageType::Error, "[ATurnBasedActor] Failed to fully init, health component invalid!");
 }
 
 void ATurnBasedActor::PrepareTurn(ATurnBasedActor* Enemy)
 {
 }
 
-void ATurnBasedActor::SetNextActionData(UActionData* Data)
+void ATurnBasedActor::SetNextAction(UAction* InAction)
 {
-	NextAction.Data = Data;
+	NextAction.Action = InAction;
 }
 
 void ATurnBasedActor::SetNextActionCaster(ATurnBasedActor* Caster)
@@ -37,13 +67,13 @@ void ATurnBasedActor::SetNextActionTarget(ATurnBasedActor* Target)
 
 void ATurnBasedActor::ValidateNextAction()
 {
-	if (NextAction.Data == nullptr)
+	if (NextAction.Action == nullptr)
 	{
 		UTurnBasedDebugLibrary::Print(EDebugMessageType::Error, "[ATurnBasedActor] Validating nullptr action data.");
 		return;
 	}
 	
-	NextActionValidated.Broadcast(NextAction.Data);
+	NextActionValidated.Broadcast(NextAction.Action);
 }
 
 void ATurnBasedActor::FinalizeTurnPreparation()
@@ -54,6 +84,10 @@ void ATurnBasedActor::FinalizeTurnPreparation()
 void ATurnBasedActor::StartTurn()
 {
 	TurnStarted.Broadcast();
+	
+	UActionSolverLibrary::SolveAction(NextAction);
+	
+	EndTurn();
 }
 
 void ATurnBasedActor::EndTurn()
@@ -61,9 +95,24 @@ void ATurnBasedActor::EndTurn()
 	TurnEnded.Broadcast();
 }
 
-TArray<UActionData*> ATurnBasedActor::GetActionsData() const
+const TArray<UAction*>& ATurnBasedActor::GetActions() const
 {
-	return ActionsData;
+	return Actions;
+}
+
+FActionContext ATurnBasedActor::GetNextAction() const
+{
+	return NextAction;
+}
+
+UHealthComponent* ATurnBasedActor::GetHealthComponent()
+{
+	return HealthComponent;
+}
+
+UStatusComponent* ATurnBasedActor::GetStatusComponent()
+{
+	return StatusComponent;
 }
 
 
