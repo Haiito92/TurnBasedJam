@@ -19,6 +19,8 @@ UStatusComponent::UStatusComponent()
 bool UStatusComponent::ApplyStatus(const TSubclassOf<UStatus>& StatusClass, UStatus* InOutStatus)
 {
 	UStatus* Status = NewObject<UStatus>(this, StatusClass);
+	
+	bool DidApplyStatus	= false;
 	if (HasStatus(Status->GetEnum()) && Status->GetDuplicity() == EStatusDuplicity::Solo)
 	{
 		//UTurnBasedDebugLibrary::Print(EDebugMessageType::Warning, "[UStatusComponent] Can't apply solo status already applied: " + StatusClass->GetName());
@@ -26,19 +28,27 @@ bool UStatusComponent::ApplyStatus(const TSubclassOf<UStatus>& StatusClass, USta
 		UStatus* SoloStatus = GetFirstAppliedStatusByEnum(Status->GetEnum());
 		SoloStatus->ResetStatus();
 		InOutStatus = SoloStatus;
-		return false;
+	}
+	else
+	{
+		AppliedStatus.Add(Status);
+		InOutStatus = Status;
+		
+		DidApplyStatus = true;
 	}
 	
-	AppliedStatus.Add(Status);
-	InOutStatus = Status;
-	return true;
+	StatusChanged.Broadcast();
+	return DidApplyStatus;
 }
 
 bool UStatusComponent::RemoveStatus(UStatus* Status)
 {
 	TArray<TObjectPtr<UStatus>>::SizeType NbRemoved = AppliedStatus.Remove(Status);
 	
-	return NbRemoved != 0;
+	if (NbRemoved == 0) return false;
+	
+	StatusChanged.Broadcast();
+	return true;
 }
 
 

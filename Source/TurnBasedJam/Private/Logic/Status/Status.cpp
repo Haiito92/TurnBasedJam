@@ -50,3 +50,8 @@ const EStatusGroup& UStatus::GetGroup() const
 {
 	return Group;
 }
+
+const UStatusData* UStatus::GetData() const
+{
+	return Data;
+}
