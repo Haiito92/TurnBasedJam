@@ -11,6 +11,7 @@
  * 
  */
 
+class UStatusData;
 class ATurnBasedActor;
 
 UENUM()
@@ -60,6 +61,9 @@ public:
 	UFUNCTION(BlueprintCallable)
 	const EStatusGroup& GetGroup() const;
 	
+	UFUNCTION(BlueprintCallable)
+	const UStatusData* GetData() const;
+	
 protected:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Status")
 	EStatusEnum Enum = EStatusEnum::ST_None;
@@ -76,4 +80,7 @@ protected:
 private:
 	UPROPERTY()
 	int CurrentLifespan;
+	
+	UPROPERTY(EditAnywhere)
+	TObjectPtr<UStatusData> Data;
 };
