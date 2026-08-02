@@ -23,6 +23,9 @@ public:
 	bool ApplyStatus(const TSubclassOf<UStatus>& StatusClass, UStatus* InOutStatus);
 	
 	UFUNCTION(BlueprintCallable)
+	void TickStatus(TArray<UStatus*> StatusList);
+	
+	UFUNCTION(BlueprintCallable)
 	bool RemoveStatus(UStatus* Status);
 	
 	UFUNCTION(BlueprintCallable, meta=(AutoCreateRefTerm="StatusEnum"))
@@ -37,7 +40,7 @@ public:
 	UFUNCTION(BlueprintCallable, BlueprintPure, meta=(AutoCreateRefTerm="StatusEnum"))
 	UStatus* GetFirstAppliedStatusByEnum(const EStatusEnum& StatusEnum);
 
-	DECLARE_DYNAMIC_MULTICAST_DELEGATE(FStatusChangedSignature);
+	DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FStatusChangedSignature, const TArray<UStatus*>&, StatusList);
 	UPROPERTY(BlueprintAssignable)
 	FStatusChangedSignature StatusChanged;
 
