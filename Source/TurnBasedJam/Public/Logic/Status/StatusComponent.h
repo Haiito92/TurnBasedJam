@@ -34,9 +34,10 @@ public:
 	UFUNCTION(BlueprintCallable, meta=(AutoCreateRefTerm="Group"))
 	TArray<UStatus*> GetAppliedStatusByGroup(const EStatusGroup& Group) const;
 	
-	UFUNCTION(BlueprintCallable, meta=(AutoCreateRefTerm="StatusEnum"))
-	const UStatus* GetFirstAppliedStatusByEnum(const EStatusEnum& StatusEnum) const;
+	UFUNCTION(BlueprintCallable, BlueprintPure, meta=(AutoCreateRefTerm="StatusEnum"))
+	UStatus* GetFirstAppliedStatusByEnum(const EStatusEnum& StatusEnum);
 protected:
+	
 	UPROPERTY(BlueprintReadOnly)
 	TArray<TObjectPtr<UStatus>> AppliedStatus;
 };

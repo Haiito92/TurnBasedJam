@@ -22,20 +22,22 @@ enum class EStatusGroup: uint8
 	ActorEndTurn
 };
 
+UENUM()
+enum class EStatusDuplicity: uint8
+{
+	Solo,
+	Multiple
+};
+
 UCLASS(Blueprintable, BlueprintType)
 class TURNBASEDJAM_API UStatus : public UObject
 {
 	GENERATED_BODY()
 	
 public:
-	UPROPERTY(EditAnywhere, Category="Status")
-	EStatusEnum Enum = EStatusEnum::ST_None;
 	
-	UPROPERTY(EditAnywhere, Category="Status")
-	int Lifespan = 1;
-	
-	UPROPERTY(EditAnywhere, Category="Status")
-	EStatusGroup Group = EStatusGroup::GlobalStartTurn;
+	UFUNCTION(BlueprintCallable)
+	void InitStatus();
 	
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
 	void ApplyStatus(ATurnBasedActor* Target);
@@ -43,4 +45,35 @@ public:
 	void TickStatus(ATurnBasedActor* Target);
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
 	void RemoveStatus(ATurnBasedActor* Target);
+	
+	UFUNCTION(BlueprintCallable)
+	void ResetStatus();
+	
+	UFUNCTION(BlueprintCallable)
+	const EStatusEnum& GetEnum() const;
+	UFUNCTION(BlueprintCallable)
+	const EStatusDuplicity& GetDuplicity() const;
+	UFUNCTION(BlueprintCallable)
+	float GetOriginalLifespan() const;
+	UFUNCTION(BlueprintCallable)
+	float GetCurrentLifespan() const;
+	UFUNCTION(BlueprintCallable)
+	const EStatusGroup& GetGroup() const;
+	
+protected:
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Status")
+	EStatusEnum Enum = EStatusEnum::ST_None;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Status")
+	EStatusDuplicity Duplicity = EStatusDuplicity::Solo;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Status")
+	int OriginalLifespan = 1;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Status")
+	EStatusGroup Group = EStatusGroup::GlobalStartTurn;
+	
+private:
+	UPROPERTY()
+	int CurrentLifespan;
 };

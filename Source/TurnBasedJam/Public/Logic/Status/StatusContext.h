@@ -40,7 +40,7 @@ public:
 	~FTickMultipleStatusContext() = default;
 	
 	UPROPERTY(BlueprintReadWrite)
-	EStatusGroup Group;
+	EStatusGroup Group = EStatusGroup::GlobalStartTurn;
 	
 	UPROPERTY(BlueprintReadWrite)
 	TObjectPtr<ATurnBasedActor> Holder;
@@ -74,7 +74,7 @@ public:
 	~FPurgeStatusContext() = default;
 	
 	UPROPERTY(BlueprintReadWrite)
-	EStatusGroup Group;
+	EStatusGroup Group = EStatusGroup::GlobalStartTurn;
 	
 	UPROPERTY(BlueprintReadWrite)
 	TObjectPtr<ATurnBasedActor> Holder;

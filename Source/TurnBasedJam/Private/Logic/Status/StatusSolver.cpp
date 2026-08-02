@@ -76,7 +76,7 @@ void UStatusSolver::PurgeStatus(const FPurgeStatusContext& Context)
 	
 	for (UStatus* Status : StatusToPurge)
 	{
-		if (Status->Lifespan > 0) continue;
+		if (Status->GetCurrentLifespan() > 0) continue;
 		
 		RemoveStatus({Status, Context.Holder});
 	}
