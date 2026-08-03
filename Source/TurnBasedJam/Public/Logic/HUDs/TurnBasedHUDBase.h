@@ -10,6 +10,8 @@
  * 
  */
 
+class UUIEventsHolder;
+
 UCLASS()
 class TURNBASEDJAM_API ATurnBasedHUDBase : public AHUD
 {
@@ -17,16 +19,16 @@ class TURNBASEDJAM_API ATurnBasedHUDBase : public AHUD
 	
 public:
 	UFUNCTION()
-	void InitializeHUD();
+	void InitializeHUD(UUIEventsHolder* InUIEventsHolder);
 	
 	UFUNCTION()
 	void StartHUD();
 	
 protected:
 	UFUNCTION()
-	virtual void InternalInitialization();
+	virtual void InternalInitialization(UUIEventsHolder* InUIEventsHolder);
 	UFUNCTION(BlueprintImplementableEvent, DisplayName="Receive Internal Initialization")
-	void ReceiveInternalInitialization();
+	void ReceiveInternalInitialization(UUIEventsHolder* InUIEventsHolder);
 
 	UFUNCTION()
 	virtual void SpawnWidgets();
@@ -47,4 +49,8 @@ protected:
 	virtual void StartWidgets();
 	UFUNCTION(BlueprintImplementableEvent, DisplayName="Receive Start Widgets")
 	void ReceiveStartWidgets();
+	
+protected:
+	UPROPERTY(BlueprintReadOnly)
+	TObjectPtr<UUIEventsHolder> UIEventHolder;
 };

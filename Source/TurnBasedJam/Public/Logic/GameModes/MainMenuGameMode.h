@@ -14,4 +14,8 @@ UCLASS()
 class TURNBASEDJAM_API AMainMenuGameMode : public ATurnBasedGameModeBase
 {
 	GENERATED_BODY()
+	
+protected:
+	UFUNCTION()
+	virtual void StartGame() override;
 };

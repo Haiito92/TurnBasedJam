@@ -3,10 +3,12 @@
 
 #include "TurnBasedJam/Public/Logic/HUDs/TurnBasedHUDBase.h"
 
-void ATurnBasedHUDBase::InitializeHUD()
+#include "Logic/GameEvents/UIEventsHolder.h"
+
+void ATurnBasedHUDBase::InitializeHUD(UUIEventsHolder* InUIEventsHolder)
 {
-	InternalInitialization();
-	ReceiveInternalInitialization();
+	InternalInitialization(InUIEventsHolder);
+	ReceiveInternalInitialization(InUIEventsHolder);
 	
 	SpawnWidgets();
 	ReceiveSpawnWidgets();
@@ -24,8 +26,9 @@ void ATurnBasedHUDBase::StartHUD()
 	ReceiveStartWidgets();
 }
 
-void ATurnBasedHUDBase::InternalInitialization()
+void ATurnBasedHUDBase::InternalInitialization(UUIEventsHolder* InUIEventsHolder)
 {
+	UIEventHolder = InUIEventsHolder;
 }
 
 void ATurnBasedHUDBase::SpawnWidgets()

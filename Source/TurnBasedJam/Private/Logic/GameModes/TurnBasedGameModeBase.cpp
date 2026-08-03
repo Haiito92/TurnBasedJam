@@ -4,6 +4,7 @@
 #include "TurnBasedJam/Public/Logic/GameModes/TurnBasedGameModeBase.h"
 
 #include "Kismet/GameplayStatics.h"
+#include "Logic/GameEvents/UIEventsHolder.h"
 #include "Logic/HUDs/TurnBasedHUDBase.h"
 #include "Logic/PlayerControllers/TurnBasedPlayerControllerBase.h"
 #include "TurnBasedJam/Public/Logic/Debug/TurnBasedDebugLibrary.h"
@@ -20,6 +21,7 @@ void ATurnBasedGameModeBase::BeginPlay()
 	}
 	
 	StartGame();
+	ReceiveStartGame();
 }
 
 bool ATurnBasedGameModeBase::InitializeGameMode()
@@ -28,11 +30,13 @@ bool ATurnBasedGameModeBase::InitializeGameMode()
 	{
 		return false;
 	}
+	ReceiveInitializeGame();
 	
 	if (!InitializeUI())
 	{
 		return false;
 	}
+	ReceiveInitializeUI();
 	
 	return true;
 }
@@ -56,6 +60,8 @@ bool ATurnBasedGameModeBase::InitializeGame()
 		return false;
 	}
 	
+	UIEventsHolder = NewObject<UUIEventsHolder>(this);
+	
 	return true;
 }
 
@@ -69,7 +75,7 @@ bool ATurnBasedGameModeBase::InitializeUI()
 		return false;
 	}
 	
-	HUD->InitializeHUD();
+	HUD->InitializeHUD(UIEventsHolder);
 	
 	return true;
 }

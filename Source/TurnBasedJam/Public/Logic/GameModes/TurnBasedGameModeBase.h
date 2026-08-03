@@ -6,6 +6,7 @@
 #include "GameFramework/GameModeBase.h"
 #include "TurnBasedGameModeBase.generated.h"
 
+class UUIEventsHolder;
 class ATurnBasedPlayerControllerBase;
 class ATurnBasedHUDBase;
 class UGameModesSettings;
@@ -24,16 +25,28 @@ protected:
 	virtual void BeginPlay() override;
 	
 	bool InitializeGameMode();
-	virtual bool InitializeGame();
-	virtual bool InitializeUI();
-	virtual void StartGame();
 	
-	UPROPERTY()
+	virtual bool InitializeGame();
+	UFUNCTION(BlueprintImplementableEvent)
+	void ReceiveInitializeGame();
+	
+	virtual bool InitializeUI();
+	UFUNCTION(BlueprintImplementableEvent)
+	void ReceiveInitializeUI();
+	
+	virtual void StartGame();
+	UFUNCTION(BlueprintImplementableEvent)
+	void ReceiveStartGame();
+	
+	UPROPERTY(BlueprintReadOnly)
 	const UGameModesSettings* GameModesSettings;
 	
-	UPROPERTY()
+	UPROPERTY(BlueprintReadOnly)
 	TObjectPtr<ATurnBasedHUDBase> HUD;
 	
-	UPROPERTY()
+	UPROPERTY(BlueprintReadOnly)
 	TObjectPtr<ATurnBasedPlayerControllerBase> PlayerController;
+	
+	UPROPERTY(BlueprintReadOnly)
+	TObjectPtr<UUIEventsHolder> UIEventsHolder;
 };
