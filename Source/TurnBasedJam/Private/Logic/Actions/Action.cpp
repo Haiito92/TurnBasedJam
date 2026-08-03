@@ -5,7 +5,7 @@
 #include "Logic/Actions/ActionData.h"
 #include "Logic/Debug/TurnBasedDebugLibrary.h"
 
-bool UAction::ApplyActionStrategy_Implementation(ATurnBasedActor* ActionTarget)
+bool UAction::ApplyActionStrategy_Implementation(ATurnBasedActor* ActionTarget, ATurnBasedActor* ActionCaster)
 {
 	if (!IsValid(Data))
 	{

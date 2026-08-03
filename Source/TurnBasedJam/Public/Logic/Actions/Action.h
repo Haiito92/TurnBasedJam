@@ -19,7 +19,7 @@ class TURNBASEDJAM_API UAction : public UObject
 	
 public:
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
-	bool ApplyActionStrategy(ATurnBasedActor* ActionTarget);
+	bool ApplyActionStrategy(ATurnBasedActor* ActionTarget, ATurnBasedActor* ActionCaster);
 	
 	UFUNCTION(BlueprintCallable)
 	UActionData* GetActionData() const;

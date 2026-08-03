@@ -96,3 +96,15 @@ UStatus* UStatusComponent::GetFirstAppliedStatusByEnum(const EStatusEnum& Status
 	return FoundStatus;
 }
 
+TArray<UStatus*> UStatusComponent::GetAllAppliedStatusByEnum(const EStatusEnum& StatusEnum)
+{
+	TArray<UStatus*> StatusToReturn;
+	
+	for (UStatus* Status : AppliedStatus)
+	{
+		if (Status->GetEnum() == StatusEnum) StatusToReturn.Add(Status);
+	}
+	
+	return StatusToReturn;
+}
+
