@@ -43,6 +43,12 @@ void UTurnManager::StartFight()
 
 void UTurnManager::PrepareTurn()
 {
+	UStatusSolver::TickStatus({EStatusGroup::GlobalStartTurn, Hero});
+	UStatusSolver::TickStatus({EStatusGroup::GlobalStartTurn, Vampire});
+	
+	UStatusSolver::PurgeStatus({EStatusGroup::GlobalStartTurn, Hero});
+	UStatusSolver::PurgeStatus({EStatusGroup::GlobalStartTurn, Vampire});
+	
 	Vampire->PrepareTurn(Hero);
 	
 	Hero->PrepareTurn(Vampire);
@@ -63,12 +69,6 @@ void UTurnManager::FinalizeTurnPreparation()
 
 void UTurnManager::ResolveTurn()
 {
-	UStatusSolver::TickStatus({EStatusGroup::GlobalStartTurn, Hero});
-	UStatusSolver::TickStatus({EStatusGroup::GlobalStartTurn, Vampire});
-	
-	UStatusSolver::PurgeStatus({EStatusGroup::GlobalStartTurn, Hero});
-	UStatusSolver::PurgeStatus({EStatusGroup::GlobalStartTurn, Vampire});
-	
 	UStatusSolver::TickStatus({EStatusGroup::ActorStartTurn, Hero});
 	UStatusSolver::PurgeStatus({EStatusGroup::ActorStartTurn, Hero});
 	Hero->StartTurn();

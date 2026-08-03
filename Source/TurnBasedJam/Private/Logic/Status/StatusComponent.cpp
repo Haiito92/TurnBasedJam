@@ -31,6 +31,7 @@ bool UStatusComponent::ApplyStatus(const TSubclassOf<UStatus>& StatusClass, USta
 	}
 	else
 	{
+		Status->InitStatus();
 		AppliedStatus.Add(Status);
 		InOutStatus = Status;
 		
