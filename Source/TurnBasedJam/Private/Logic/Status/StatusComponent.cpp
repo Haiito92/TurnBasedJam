@@ -31,6 +31,7 @@ bool UStatusComponent::ApplyStatus(const TSubclassOf<UStatus>& StatusClass, USta
 	}
 	else
 	{
+		Status->InitStatus();
 		AppliedStatus.Add(Status);
 		InOutStatus = Status;
 		
@@ -93,5 +94,17 @@ UStatus* UStatusComponent::GetFirstAppliedStatusByEnum(const EStatusEnum& Status
 	})->Get();
 	
 	return FoundStatus;
+}
+
+TArray<UStatus*> UStatusComponent::GetAllAppliedStatusByEnum(const EStatusEnum& StatusEnum)
+{
+	TArray<UStatus*> StatusToReturn;
+	
+	for (UStatus* Status : AppliedStatus)
+	{
+		if (Status->GetEnum() == StatusEnum) StatusToReturn.Add(Status);
+	}
+	
+	return StatusToReturn;
 }
 

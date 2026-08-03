@@ -40,6 +40,9 @@ public:
 	UFUNCTION(BlueprintCallable, BlueprintPure, meta=(AutoCreateRefTerm="StatusEnum"))
 	UStatus* GetFirstAppliedStatusByEnum(const EStatusEnum& StatusEnum);
 
+	UFUNCTION(BlueprintCallable, BlueprintPure, meta=(AutoCreateRefTerm="StatusEnum"))
+	TArray<UStatus*> GetAllAppliedStatusByEnum(const EStatusEnum& StatusEnum);
+	
 	DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FStatusChangedSignature, const TArray<UStatus*>&, StatusList);
 	UPROPERTY(BlueprintAssignable)
 	FStatusChangedSignature StatusChanged;
