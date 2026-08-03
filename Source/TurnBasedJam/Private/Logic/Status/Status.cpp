@@ -3,6 +3,9 @@
 
 #include "Logic/Status/Status.h"
 
+#include "Logic/Debug/TurnBasedDebugLibrary.h"
+#include "Logic/Status/StatusData.h"
+
 void UStatus::ApplyStatus_Implementation(ATurnBasedActor* Target)
 {
 }
@@ -18,27 +21,54 @@ void UStatus::RemoveStatus_Implementation(ATurnBasedActor* Target)
 
 void UStatus::InitStatus()
 {
-	CurrentLifespan = OriginalLifespan;
+	if (!IsValid(Data))
+	{
+		UTurnBasedDebugLibrary::Print(EDebugMessageType::Error, "[UStatus] Can't init, data invalid!");
+		return;
+	}
+	
+	CurrentLifespan = Data->OriginalLifespan;
 }
 
 void UStatus::ResetStatus()
 {
-	CurrentLifespan = OriginalLifespan;
+	if (!IsValid(Data))
+	{
+		UTurnBasedDebugLibrary::Print(EDebugMessageType::Error, "[UStatus] Can't reset, data invalid!");
+		return;
+	}
+	
+	CurrentLifespan = Data->OriginalLifespan;
 }
 
-const EStatusEnum& UStatus::GetEnum() const
+EStatusEnum UStatus::GetEnum() const
 {
-	return Enum;
+	if (!IsValid(Data))
+	{
+		UTurnBasedDebugLibrary::Print(EDebugMessageType::Error, "[UStatus] Can't get enum, data invalid!");
+		return EStatusEnum::ST_None;
+	}
+	return Data->Enum;
 }
 
-const EStatusDuplicity& UStatus::GetDuplicity() const
+EStatusDuplicity UStatus::GetDuplicity() const
 {
-	return Duplicity;
+	if (!IsValid(Data))
+	{
+		UTurnBasedDebugLibrary::Print(EDebugMessageType::Error, "[UStatus] Can't get duplicity, data invalid!");
+		return EStatusDuplicity::None;
+	}
+	return Data->Duplicity;
 }
 
 float UStatus::GetOriginalLifespan() const
 {
-	return OriginalLifespan;
+	if (!IsValid(Data))
+	{
+		UTurnBasedDebugLibrary::Print(EDebugMessageType::Error, "[UStatus] Can't get original lifespan, data invalid!");
+		return -1;
+	}
+	return Data->OriginalLifespan;
 }
 
 float UStatus::GetCurrentLifespan() const
@@ -46,9 +76,15 @@ float UStatus::GetCurrentLifespan() const
 	return CurrentLifespan;
 }
 
-const EStatusGroup& UStatus::GetGroup() const
+EStatusGroup UStatus::GetGroup() const
 {
-	return Group;
+	if (!IsValid(Data))
+	{
+		UTurnBasedDebugLibrary::Print(EDebugMessageType::Error, "[UStatus] Can't get group, data invalid!");
+		return EStatusGroup::None;
+	}
+	
+	return Data->Group;
 }
 
 const UStatusData* UStatus::GetData() const

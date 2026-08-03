@@ -15,12 +15,24 @@ class TURNBASEDJAM_API UStatusData : public UDataAsset
 	GENERATED_BODY()
 	
 public:
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Status|Info")
 	FText StatusName;
 	
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Status|Info")
 	UTexture2D* Sprite;
 	
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Status|Info")
 	FText Description;
+	
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Status|Data")
+	float OriginalLifespan;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Status|Data")
+	EStatusEnum Enum = EStatusEnum::ST_None;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Status|Data")
+	EStatusDuplicity Duplicity = EStatusDuplicity::Solo;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Status|Data")
+	EStatusGroup Group = EStatusGroup::GlobalStartTurn;
 };
