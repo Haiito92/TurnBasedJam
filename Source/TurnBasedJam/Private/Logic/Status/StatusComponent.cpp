@@ -37,8 +37,13 @@ bool UStatusComponent::ApplyStatus(const TSubclassOf<UStatus>& StatusClass, USta
 		DidApplyStatus = true;
 	}
 	
-	StatusChanged.Broadcast();
+	StatusChanged.Broadcast(AppliedStatus);
 	return DidApplyStatus;
+}
+
+void UStatusComponent::TickStatus(TArray<UStatus*> StatusList)
+{
+	StatusChanged.Broadcast(AppliedStatus);
 }
 
 bool UStatusComponent::RemoveStatus(UStatus* Status)
@@ -47,7 +52,7 @@ bool UStatusComponent::RemoveStatus(UStatus* Status)
 	
 	if (NbRemoved == 0) return false;
 	
-	StatusChanged.Broadcast();
+	StatusChanged.Broadcast(AppliedStatus);
 	return true;
 }
 

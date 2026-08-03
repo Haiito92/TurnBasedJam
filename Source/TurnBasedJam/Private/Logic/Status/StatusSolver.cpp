@@ -45,6 +45,8 @@ void UStatusSolver::TickStatus(const FTickMultipleStatusContext& Context)
 	{
 		Status->TickStatus(Context.Holder);
 	}
+	
+	StatusComponent->TickStatus(StatusToTick);
 }
 
 void UStatusSolver::RemoveStatus(const FRemoveStatusContext& Context)
