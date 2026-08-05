@@ -38,6 +38,11 @@ protected:
 	UFUNCTION(BlueprintImplementableEvent)
 	void ReceiveStartGame();
 	
+	
+	virtual void EndGame(bool Won);
+	UFUNCTION(BlueprintImplementableEvent)
+	void ReceiveEndGame(bool Won);
+	
 	UPROPERTY(BlueprintReadOnly)
 	const UGameModesSettings* GameModesSettings;
 	

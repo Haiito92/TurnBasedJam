@@ -28,6 +28,9 @@ public:
 	void Die();
 	
 	UFUNCTION(BlueprintCallable)
+	bool IsAlive() const;
+	
+	UFUNCTION(BlueprintCallable)
 	float GetMaxHealth() const;
 	UFUNCTION(BlueprintCallable)
 	float GetHealth() const;
@@ -56,4 +59,9 @@ private:
 	
 	UPROPERTY()
 	float Health;
+	
+private:
+	UFUNCTION(CallInEditor)
+	void SetHealthToZero();
+	
 };

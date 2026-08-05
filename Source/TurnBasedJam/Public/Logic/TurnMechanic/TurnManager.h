@@ -24,6 +24,13 @@ public:
 	UFUNCTION()
 	void StartFight();
 	
+	UFUNCTION()
+	void EndFight(bool HeroWon);
+	
+	DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FFightEndedSignature, bool, HeroWon);
+	UPROPERTY(BlueprintAssignable)
+	FFightEndedSignature FightEnded;
+	
 private:
 	UFUNCTION()
 	void PrepareTurn();
