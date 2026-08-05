@@ -6,6 +6,8 @@
 #include "TurnBasedGameModeBase.h"
 #include "TurnBasedGameMode.generated.h"
 
+class UDialogueWorldSubsystem;
+class UDialogueData;
 class AVampire;
 class AHero;
 class UTurnManager;
@@ -24,10 +26,15 @@ public:
 	AVampire* GetVampire() const;
 	
 protected:
+	
 	virtual bool InitializeGame() override;
 	virtual void StartGame() override;
 	virtual void EndGame(bool Won) override;
 	
+	UFUNCTION()
+	void OnDialogueStarted(const UDialogueData* DialogueData);
+	UFUNCTION()
+	void OnDialogueEnded(const UDialogueData* DialogueData);
 	UFUNCTION()
 	void OnFightEnded(bool bHeroWon);
 private:
@@ -39,4 +46,10 @@ private:
 	
 	UPROPERTY()
 	TObjectPtr<AVampire> Vampire;
+	
+	UPROPERTY()
+	TObjectPtr<UDialogueWorldSubsystem> DialogueWorldSubsystem;
+	
+	UPROPERTY(EditAnywhere)
+	TObjectPtr<UDialogueData> StartDialogue;
 };
