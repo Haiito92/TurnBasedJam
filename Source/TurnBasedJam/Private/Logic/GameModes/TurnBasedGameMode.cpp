@@ -4,6 +4,7 @@
 #include "TurnBasedJam/Public/Logic/GameModes/TurnBasedGameMode.h"
 #include "Kismet/GameplayStatics.h"
 #include "Logic/Debug/TurnBasedDebugLibrary.h"
+#include "Logic/Dialogues/DialogueWorldSubsystem.h"
 #include "Logic/FightActors/Hero.h"
 #include "Logic/FightActors/Vampire.h"
 #include "Logic/GameModes/GameModesSettings.h"
@@ -61,6 +62,23 @@ bool ATurnBasedGameMode::InitializeGame()
 	
 	TurnManager->FightEnded.AddDynamic(this, &ATurnBasedGameMode::OnFightEnded);
 	
+	DialogueWorldSubsystem = GetWorld()->GetSubsystem<UDialogueWorldSubsystem>();
+	if (!IsValid(DialogueWorldSubsystem))
+	{
+		UTurnBasedDebugLibrary::Print(EDebugMessageType::Error, "[ATurnBasedGameMode] Failed init, invalid DialogueWorldSubsystem.");
+		return false;
+	}
+	UTurnBasedDebugLibrary::Print(EDebugMessageType::Log, "[ATurnBasedGameMode] DialogueWorldSubsystem valid!");
+	
+	if (!DialogueWorldSubsystem->InitDialogueSubsystem())
+	{
+		UTurnBasedDebugLibrary::Print(EDebugMessageType::Error, "[ATurnBasedGameMode] Failed init, TurnManager init failed.");
+		return false;
+	}
+	
+	DialogueWorldSubsystem->DialogueStarted.AddDynamic(this, &ATurnBasedGameMode::OnDialogueStarted);
+	DialogueWorldSubsystem->DialogueEnded.AddDynamic(this, &ATurnBasedGameMode::OnDialogueEnded);
+	
 	return true;
 }
 
@@ -74,7 +92,7 @@ void ATurnBasedGameMode::StartGame()
 	PlayerController->SetInputMode(InputModeData);
 	PlayerController->SetShowMouseCursor(true);
 	
-	TurnManager->StartFight();
+	DialogueWorldSubsystem->StartDialogue(StartDialogue);
 }
 
 void ATurnBasedGameMode::EndGame(bool Won)
@@ -82,6 +100,18 @@ void ATurnBasedGameMode::EndGame(bool Won)
 	ReceiveEndGame(Won);
 	
 	HUD->EndHUD(Won);
+}
+
+void ATurnBasedGameMode::OnDialogueStarted(const UDialogueData* DialogueData)
+{
+}
+
+void ATurnBasedGameMode::OnDialogueEnded(const UDialogueData* DialogueData)
+{
+	if (DialogueData == StartDialogue)
+	{
+		TurnManager->StartFight();
+	}
 }
 
 void ATurnBasedGameMode::OnFightEnded(bool bHeroWon)
