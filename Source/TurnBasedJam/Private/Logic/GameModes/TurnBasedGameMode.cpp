@@ -7,6 +7,7 @@
 #include "Logic/FightActors/Hero.h"
 #include "Logic/FightActors/Vampire.h"
 #include "Logic/GameModes/GameModesSettings.h"
+#include "Logic/HUDs/TurnBasedHUDBase.h"
 #include "Logic/PlayerControllers/TurnBasedPlayerControllerBase.h"
 #include "Logic/TurnMechanic/TurnManager.h"
 
@@ -58,6 +59,8 @@ bool ATurnBasedGameMode::InitializeGame()
 		return false;
 	}
 	
+	TurnManager->FightEnded.AddDynamic(this, &ATurnBasedGameMode::OnFightEnded);
+	
 	return true;
 }
 
@@ -72,4 +75,16 @@ void ATurnBasedGameMode::StartGame()
 	PlayerController->SetShowMouseCursor(true);
 	
 	TurnManager->StartFight();
+}
+
+void ATurnBasedGameMode::EndGame(bool Won)
+{
+	ReceiveEndGame(Won);
+	
+	HUD->EndHUD(Won);
+}
+
+void ATurnBasedGameMode::OnFightEnded(bool bHeroWon)
+{
+	EndGame(bHeroWon);
 }

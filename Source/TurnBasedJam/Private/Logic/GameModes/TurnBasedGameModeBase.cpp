@@ -84,3 +84,8 @@ void ATurnBasedGameModeBase::StartGame()
 {
 	
 }
+
+void ATurnBasedGameModeBase::EndGame(bool Won)
+{
+	ReceiveEndGame(Won);
+}

@@ -22,6 +22,7 @@ void UHealthComponent::InitHealthComponent()
 
 void UHealthComponent::TakeDamage(float Damage)
 {
+	if (!IsAlive()) return;
 	if (Health <= 0) return;
 	
 	Health = FMath::Clamp(Health - Damage, 0.0f, MaxHealth);
@@ -34,6 +35,7 @@ void UHealthComponent::TakeDamage(float Damage)
 
 void UHealthComponent::Heal(float Heal)
 {
+	if (!IsAlive()) return;
 	if (Health >= MaxHealth) return;
 	
 	Health = FMath::Clamp(Health + Heal, 0.0f, MaxHealth);
@@ -44,7 +46,13 @@ void UHealthComponent::Heal(float Heal)
 
 void UHealthComponent::Die()
 {
+	if (!IsAlive()) return;
 	Died.Broadcast();
+}
+
+bool UHealthComponent::IsAlive() const
+{
+	return Health > 0;
 }
 
 float UHealthComponent::GetMaxHealth() const
@@ -55,4 +63,9 @@ float UHealthComponent::GetMaxHealth() const
 float UHealthComponent::GetHealth() const
 {
 	return Health;
+}
+
+void UHealthComponent::SetHealthToZero()
+{
+	Health = 0;
 }

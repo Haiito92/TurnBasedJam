@@ -41,6 +41,11 @@ void UTurnManager::StartFight()
 	PrepareTurn();
 }
 
+void UTurnManager::EndFight(bool HeroWon)
+{
+	FightEnded.Broadcast(HeroWon);
+}
+
 void UTurnManager::PrepareTurn()
 {
 	UStatusSolver::TickStatus({EStatusGroup::GlobalStartTurn, Hero});
@@ -107,5 +112,17 @@ void UTurnManager::OnVampireTurnEnded()
 
 void UTurnManager::OnTurnResolutionEndTimerElapsed()
 {
+	if (!Hero->GetHealthComponent()->IsAlive())
+	{
+		EndFight(false);
+		return;
+	}	
+	
+	if (!Vampire->GetHealthComponent()->IsAlive())
+	{
+		EndFight(true);
+		return;	
+	}
+	
 	PrepareTurn();
 }

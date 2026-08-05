@@ -26,6 +26,11 @@ void ATurnBasedHUDBase::StartHUD()
 	ReceiveStartWidgets();
 }
 
+void ATurnBasedHUDBase::EndHUD(bool Won)
+{
+	ReceiveEndHUD(Won);
+}
+
 void ATurnBasedHUDBase::InternalInitialization(UUIEventsHolder* InUIEventsHolder)
 {
 	UIEventHolder = InUIEventsHolder;

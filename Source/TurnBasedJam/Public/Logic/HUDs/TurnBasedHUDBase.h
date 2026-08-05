@@ -24,7 +24,12 @@ public:
 	UFUNCTION()
 	void StartHUD();
 	
+	UFUNCTION()
+	void EndHUD(bool Won);
 protected:
+	UFUNCTION(BlueprintImplementableEvent, DisplayName="Receive End HUD")
+	void ReceiveEndHUD(bool Won);
+	
 	UFUNCTION()
 	virtual void InternalInitialization(UUIEventsHolder* InUIEventsHolder);
 	UFUNCTION(BlueprintImplementableEvent, DisplayName="Receive Internal Initialization")

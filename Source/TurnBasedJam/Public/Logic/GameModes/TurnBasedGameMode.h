@@ -26,7 +26,10 @@ public:
 protected:
 	virtual bool InitializeGame() override;
 	virtual void StartGame() override;
+	virtual void EndGame(bool Won) override;
 	
+	UFUNCTION()
+	void OnFightEnded(bool bHeroWon);
 private:
 	UPROPERTY()
 	TObjectPtr<UTurnManager> TurnManager;
