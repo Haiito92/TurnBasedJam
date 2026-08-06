@@ -17,8 +17,10 @@ ATurnBasedActor::ATurnBasedActor()
 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 	
+	Root = CreateDefaultSubobject<USceneComponent>("Root");
+	SetRootComponent(Root);
 	ActorMesh = CreateDefaultSubobject<UStaticMeshComponent>("ActorMesh");
-	SetRootComponent(ActorMesh);
+	ActorMesh->SetupAttachment(Root);
 	
 	HealthComponent = CreateDefaultSubobject<UHealthComponent>("HealthComponent");
 	StatusComponent = CreateDefaultSubobject<UStatusComponent>("StatusComponent");

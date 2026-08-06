@@ -91,6 +91,9 @@ protected:
 	FActionContext NextAction;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	TObjectPtr<USceneComponent> Root;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	TObjectPtr<UStaticMeshComponent> ActorMesh;
 	
 private:
