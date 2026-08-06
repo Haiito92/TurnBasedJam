@@ -26,5 +26,8 @@ public:
 	static void RemoveStatus(const FRemoveStatusContext& Context);
 	
 	UFUNCTION(BlueprintCallable, meta=(AutoCreateRefTerm="Context"))
+	static void RemoveAllStatusByEnum(const FRemoveAllStatusByEnumContext& Context);	
+	
+	UFUNCTION(BlueprintCallable, meta=(AutoCreateRefTerm="Context"))
 	static void PurgeStatus(const FPurgeStatusContext& Context);
 };

@@ -22,6 +22,12 @@ Holder(InHolder)
 {
 }
 
+FRemoveAllStatusByEnumContext::FRemoveAllStatusByEnumContext(const EStatusEnum& InEnum, ATurnBasedActor* InHolder):
+Enum(InEnum),
+Holder(InHolder)
+{
+}
+
 FPurgeStatusContext::FPurgeStatusContext(const EStatusGroup& InGroup, ATurnBasedActor* InHolder):
 Group(InGroup),
 Holder(InHolder)

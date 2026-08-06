@@ -64,6 +64,24 @@ void UStatusSolver::RemoveStatus(const FRemoveStatusContext& Context)
 	Context.Status->RemoveStatus(Context.Holder);
 }
 
+void UStatusSolver::RemoveAllStatusByEnum(const FRemoveAllStatusByEnumContext& Context)
+{
+	UStatusComponent* StatusComponent = Context.Holder->GetStatusComponent();
+	
+	if (!IsValid(StatusComponent))
+	{
+		UTurnBasedDebugLibrary::Print(EDebugMessageType::Error, "[UStatusSolver] Couldn't remove all status by enum, status component invalid!");
+		return;
+	}
+	TArray<UStatus*> StatusToRemove;
+	StatusComponent->RemoveAllStatusByEnum(Context.Enum, StatusToRemove);
+	
+	for (UStatus* Status : StatusToRemove)
+	{
+		Status->RemoveStatus(Context.Holder);
+	}
+}
+
 void UStatusSolver::PurgeStatus(const FPurgeStatusContext& Context)
 {
 	UStatusComponent* StatusComponent = Context.Holder->GetStatusComponent();

@@ -15,5 +15,6 @@ enum class EStatusEnum:uint8
 	ST_None,
 	ST_Block,
 	ST_Poison,
-	ST_Confused
+	ST_Confused,
+	ST_CritBuff
 };

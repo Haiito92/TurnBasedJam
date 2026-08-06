@@ -64,6 +64,24 @@ public:
 };
 
 USTRUCT(BlueprintType)
+struct TURNBASEDJAM_API FRemoveAllStatusByEnumContext
+{
+	GENERATED_BODY()
+	
+public:
+	FRemoveAllStatusByEnumContext() = default;
+	FRemoveAllStatusByEnumContext(const EStatusEnum& InEnum, ATurnBasedActor* InHolder);
+	~FRemoveAllStatusByEnumContext() = default;
+	
+	UPROPERTY(BlueprintReadWrite)
+	EStatusEnum Enum = EStatusEnum::ST_None;
+	
+	UPROPERTY(BlueprintReadWrite)
+	TObjectPtr<ATurnBasedActor> Holder;
+};
+
+
+USTRUCT(BlueprintType)
 struct TURNBASEDJAM_API FPurgeStatusContext
 {
 	GENERATED_BODY()
