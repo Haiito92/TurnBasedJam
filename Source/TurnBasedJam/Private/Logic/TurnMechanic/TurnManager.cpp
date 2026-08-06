@@ -107,7 +107,7 @@ void UTurnManager::OnVampireTurnEnded()
 		TurnResolutionEndTimer,
 		this,
 		&UTurnManager::OnTurnResolutionEndTimerElapsed,
-		5.0f,
+		2.5f,
 		false);
 	UTurnBasedDebugLibrary::Print(EDebugMessageType::Warning, "[UTurnManager] Wait for next turn preparation in 5 seconds...");
 }
