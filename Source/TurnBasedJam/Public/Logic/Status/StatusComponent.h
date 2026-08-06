@@ -50,6 +50,13 @@ public:
 	UPROPERTY(BlueprintAssignable)
 	FStatusChangedSignature StatusChanged;
 
+	DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FFirstStatusCopyAppliedSignature, const EStatusEnum&, StatusEnum);
+	UPROPERTY(BlueprintAssignable)
+	FFirstStatusCopyAppliedSignature FirstStatusCopyApplied;
+	
+	DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FLastStatusCopyRemovedSignature, const EStatusEnum&, StatusEnum);
+	UPROPERTY(BlueprintAssignable)
+	FLastStatusCopyRemovedSignature LastStatusCopyRemoved;
 protected:
 	
 	UPROPERTY(BlueprintReadOnly)

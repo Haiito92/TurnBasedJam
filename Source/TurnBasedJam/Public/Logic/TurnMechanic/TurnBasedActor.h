@@ -6,6 +6,7 @@
 #include "GameFramework/Actor.h"
 #include "Logic/Actions/ActionContext.h"
 #include "Logic/Health/HealthComponent.h"
+#include "Logic/Status/StatusEnum.h"
 #include "TurnBasedActor.generated.h"
 
 enum class EActionType : uint8;
@@ -22,6 +23,7 @@ public:
 	// Sets default values for this actor's properties
 	ATurnBasedActor();
 
+	
 	UFUNCTION(BlueprintCallable)
 	void InitTurnBasedActor();
 	
@@ -42,6 +44,15 @@ public:
 	virtual void PlayNextActionAnim();
 	UFUNCTION(BlueprintImplementableEvent, DisplayName="Receive Play Next Action Anim")
 	void ReceivePlayNextActionAnim(const EActionType& InActionType);
+	
+	UFUNCTION()
+	void OnFirstStatusCopyApplied(const EStatusEnum& StatusEnum);
+	UFUNCTION(BlueprintImplementableEvent, DisplayName="Receive On First Status Copy Applied")
+	void ReceiveOnFirstStatusCopyApplied(const EStatusEnum& StatusEnum);
+	UFUNCTION()
+	void OnLastStatusCopyRemoved(const EStatusEnum& StatusEnum);
+	UFUNCTION(BlueprintImplementableEvent, DisplayName="Receive On Last Status Copy Removed")
+	void ReceiveOnLastStatusCopyRemoved(const EStatusEnum& StatusEnum);
 	
 	UFUNCTION(BlueprintCallable)
 	virtual void StartTurn();
