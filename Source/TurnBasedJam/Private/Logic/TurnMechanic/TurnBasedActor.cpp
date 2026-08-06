@@ -47,6 +47,12 @@ void ATurnBasedActor::InitTurnBasedActor()
 		HealthComponent->InitHealthComponent();
 	}
 	else UTurnBasedDebugLibrary::Print(EDebugMessageType::Error, "[ATurnBasedActor] Failed to fully init, health component invalid!");
+
+	if (IsValid(StatusComponent))
+	{
+		StatusComponent->FirstStatusCopyApplied.AddDynamic(this, &ATurnBasedActor::OnFirstStatusCopyApplied);
+		StatusComponent->LastStatusCopyRemoved.AddDynamic(this, &ATurnBasedActor::OnLastStatusCopyRemoved);
+	}
 }
 
 void ATurnBasedActor::PrepareTurn(ATurnBasedActor* Enemy)
@@ -88,6 +94,16 @@ void ATurnBasedActor::PlayNextActionAnim()
 {
 	if (!IsValid(NextAction.Action) || !IsValid(NextAction.Action->GetActionData())) return;
 	ReceivePlayNextActionAnim(NextAction.Action->GetActionData()->Type);
+}
+
+void ATurnBasedActor::OnFirstStatusCopyApplied(const EStatusEnum& StatusEnum)
+{
+	ReceiveOnFirstStatusCopyApplied(StatusEnum);
+}
+
+void ATurnBasedActor::OnLastStatusCopyRemoved(const EStatusEnum& StatusEnum)
+{
+	ReceiveOnLastStatusCopyRemoved(StatusEnum);
 }
 
 

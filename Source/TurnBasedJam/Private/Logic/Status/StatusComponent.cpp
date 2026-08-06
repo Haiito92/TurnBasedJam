@@ -21,21 +21,48 @@ bool UStatusComponent::ApplyStatus(const TSubclassOf<UStatus>& StatusClass, USta
 	UStatus* Status = NewObject<UStatus>(this, StatusClass);
 	
 	bool DidApplyStatus	= false;
-	if (HasStatus(Status->GetEnum()) && Status->GetDuplicity() == EStatusDuplicity::Solo)
+	
+	switch (Status->GetDuplicity())
 	{
-		//UTurnBasedDebugLibrary::Print(EDebugMessageType::Warning, "[UStatusComponent] Can't apply solo status already applied: " + StatusClass->GetName());
+	case EStatusDuplicity::None:
+			{
+				break;		
+			}
+	case EStatusDuplicity::Solo:
+		{
+			if (HasStatus(Status->GetEnum()))
+			{
+				//UTurnBasedDebugLibrary::Print(EDebugMessageType::Warning, "[UStatusComponent] Can't apply solo status already applied: " + StatusClass->GetName());
 		
-		UStatus* SoloStatus = GetFirstAppliedStatusByEnum(Status->GetEnum());
-		SoloStatus->ResetStatus();
-		InOutStatus = SoloStatus;
-	}
-	else
-	{
-		Status->InitStatus();
-		AppliedStatus.Add(Status);
-		InOutStatus = Status;
+				UStatus* SoloStatus = GetFirstAppliedStatusByEnum(Status->GetEnum());
+				SoloStatus->ResetStatus();
+				InOutStatus = SoloStatus;
+				break;
+			}
+			
+			Status->InitStatus();
+			AppliedStatus.Add(Status);
+			InOutStatus = Status;
+			
+			FirstStatusCopyApplied.Broadcast(Status->GetEnum());
+			
+			DidApplyStatus = true;
+			break;
+		}
+	case EStatusDuplicity::Multiple:
+		{
+			if (!HasStatus(Status->GetEnum()))
+			{
+				FirstStatusCopyApplied.Broadcast(Status->GetEnum());
+			}
+			
+			Status->InitStatus();
+			AppliedStatus.Add(Status);
+			InOutStatus = Status;
 		
-		DidApplyStatus = true;
+			DidApplyStatus = true;
+			break;
+		}
 	}
 	
 	StatusChanged.Broadcast(AppliedStatus);
@@ -54,6 +81,11 @@ bool UStatusComponent::RemoveStatus(UStatus* Status)
 	if (NbRemoved == 0) return false;
 	
 	StatusChanged.Broadcast(AppliedStatus);
+	
+	if (!HasStatus(Status->GetEnum()))
+	{
+		LastStatusCopyRemoved.Broadcast(Status->GetEnum());
+	}
 	return true;
 }
 
