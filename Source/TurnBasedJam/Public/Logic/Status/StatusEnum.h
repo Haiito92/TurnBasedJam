@@ -9,7 +9,7 @@
 /**
  * 
  */
-UENUM()
+UENUM(BlueprintType)
 enum class EStatusEnum:uint8
 {
 	ST_None,
