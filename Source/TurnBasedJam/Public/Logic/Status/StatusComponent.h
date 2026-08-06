@@ -28,6 +28,9 @@ public:
 	UFUNCTION(BlueprintCallable)
 	bool RemoveStatus(UStatus* Status);
 	
+	UFUNCTION(BlueprintCallable)
+	void RemoveAllStatusByEnum(const EStatusEnum& StatusEnum, TArray<UStatus*>& InOutStatusRemoved);
+	
 	UFUNCTION(BlueprintCallable, meta=(AutoCreateRefTerm="StatusEnum"))
 	bool HasStatus(const EStatusEnum& StatusEnum) const;
 	

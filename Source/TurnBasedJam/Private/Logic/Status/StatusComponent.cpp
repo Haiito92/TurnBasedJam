@@ -57,6 +57,20 @@ bool UStatusComponent::RemoveStatus(UStatus* Status)
 	return true;
 }
 
+void UStatusComponent::RemoveAllStatusByEnum(const EStatusEnum& StatusEnum, TArray<UStatus*>& InOutStatusRemoved)
+{
+	InOutStatusRemoved.Empty();
+	
+	for (UStatus* Status : AppliedStatus)
+	{
+		if (Status->GetEnum() == StatusEnum) InOutStatusRemoved.Add(Status);
+	}
+	
+	for (UStatus* Status : InOutStatusRemoved)
+	{
+		AppliedStatus.Remove(Status);
+	}
+}
 
 
 bool UStatusComponent::HasStatus(const EStatusEnum& StatusEnum) const
