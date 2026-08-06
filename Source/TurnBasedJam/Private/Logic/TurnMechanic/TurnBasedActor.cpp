@@ -4,6 +4,7 @@
 #include "Logic/TurnMechanic/TurnBasedActor.h"
 
 #include "Logic/Actions/Action.h"
+#include "Logic/Actions/ActionData.h"
 #include "Logic/Actions/ActionSolver.h"
 #include "Logic/Debug/TurnBasedDebugLibrary.h"
 #include "Logic/Health/HealthComponent.h"
@@ -80,6 +81,13 @@ void ATurnBasedActor::FinalizeTurnPreparation()
 {
 	TurnPreparationFinalized.Broadcast();
 }
+
+void ATurnBasedActor::PlayNextActionAnim()
+{
+	if (!IsValid(NextAction.Action) || !IsValid(NextAction.Action->GetActionData())) return;
+	ReceivePlayNextActionAnim(NextAction.Action->GetActionData()->Type);
+}
+
 
 void ATurnBasedActor::StartTurn()
 {

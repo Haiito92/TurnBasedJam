@@ -8,6 +8,7 @@
 #include "Logic/Health/HealthComponent.h"
 #include "TurnBasedActor.generated.h"
 
+enum class EActionType : uint8;
 class UStatusComponent;
 class UHealthComponent;
 class UActionData;
@@ -36,6 +37,12 @@ public:
 	virtual void ValidateNextAction();
 	UFUNCTION(BlueprintCallable)
 	virtual void FinalizeTurnPreparation();
+	
+	UFUNCTION()
+	virtual void PlayNextActionAnim();
+	UFUNCTION(BlueprintImplementableEvent, DisplayName="Receive Play Next Action Anim")
+	void ReceivePlayNextActionAnim(const EActionType& InActionType);
+	
 	UFUNCTION(BlueprintCallable)
 	virtual void StartTurn();
 	UFUNCTION(BlueprintCallable)
@@ -83,10 +90,10 @@ protected:
 	UPROPERTY()
 	FActionContext NextAction;
 
-private:
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	TObjectPtr<UStaticMeshComponent> ActorMesh;
 	
+private:
 	UPROPERTY(EditAnywhere)
 	TObjectPtr<UHealthComponent> HealthComponent;
 	

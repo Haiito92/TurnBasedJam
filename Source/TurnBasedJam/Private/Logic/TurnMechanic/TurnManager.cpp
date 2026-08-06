@@ -100,6 +100,9 @@ void UTurnManager::OnVampireTurnEnded()
 	UStatusSolver::PurgeStatus({EStatusGroup::GlobalEndTurn, Hero});
 	UStatusSolver::PurgeStatus({EStatusGroup::GlobalEndTurn, Vampire});
 	
+	Hero->PlayNextActionAnim();
+	Vampire->PlayNextActionAnim();
+	
 	GetWorld()->GetTimerManager().SetTimer(
 		TurnResolutionEndTimer,
 		this,
