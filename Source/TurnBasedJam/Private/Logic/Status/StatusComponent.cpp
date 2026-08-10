@@ -102,6 +102,8 @@ void UStatusComponent::RemoveAllStatusByEnum(const EStatusEnum& StatusEnum, TArr
 	{
 		AppliedStatus.Remove(Status);
 	}
+	
+	LastStatusCopyRemoved.Broadcast(StatusEnum);
 }
 
 
